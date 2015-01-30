@@ -1,5 +1,0 @@
-ROADMAP FOR CI FIRE STARTER
-
-===================================
-
-* Build a media manager module
