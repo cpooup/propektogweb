@@ -4,7 +4,8 @@
  */
 
 // Titles
-$lang['admin title admin']                = "Administration";
+$lang['admin title admin']                = "Prekonteringsliste";
+$lang['admin label username']             = "Hello %s!";
 
 // Buttons
 $lang['admin button delete']              = "Delete";

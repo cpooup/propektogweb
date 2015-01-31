@@ -7,9 +7,6 @@
 
     <title><?php echo $page_title; ?> - <?php echo $site_title; ?></title>
 
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-
     <?php if (isset($css_files) && is_array($css_files)) : ?>
         <?php foreach ($css_files as $css) : ?>
             <?php if ( ! is_null($css)) : ?>
@@ -27,7 +24,7 @@
 <body>
 
     <?php // Fixed navbar ?>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -43,6 +40,13 @@
                 <?php echo $this->admin_nav; ?>
                 <?php // Nav bar right ?>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="<?php echo base_url('logout'); ?>">
+                        <?php 
+                             $user = $this->session->userdata('logged_in');
+                             echo sprintf(lang('admin label username'), $user['username']); 
+                        ?>
+                        </a>
+                    </li>
                     <li><a href="<?php echo base_url('logout'); ?>"><?php echo lang('core button logout'); ?></a></li>
                 </ul>
             </div>
@@ -54,9 +58,9 @@
 
         <div class="padding-override">
             <?php // Page title ?>
-            <div class="row">
+<!--            <div class="row">
                 <h1><?php echo $page_title; ?></h1>
-            </div>
+            </div>-->
 
             <?php // Main controls ?>
             <div class="row text-right">
@@ -111,9 +115,6 @@
 
     </div>
 
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
 
     <?php if (isset($js_files) && is_array($js_files)) : ?>
         <?php foreach ($js_files as $js) : ?>

@@ -176,7 +176,14 @@ class Admin_Controller extends MY_Controller {
         // set up global header data
         $this->header_data = array_merge_recursive($this->header_data, array(
             'css_files'     => array(
+                base_url("themes/admin/css/bootstrap.min.css"),
+                base_url("themes/admin/css/font-awesome.min.css"),
                 base_url("themes/admin/css/admin.css")
+            ),
+            'js_files' => array(
+                base_url("/themes/admin/js/jquery.min.js"),
+                base_url("/themes/admin/js/bootstrap.min.js"),
+                base_url("/themes/admin/js/tinymce.min.js")
             ),
             'js_files_i18n' => array(
                 $this->jsi18n->translate("/themes/admin/js/admin_i18n.js")

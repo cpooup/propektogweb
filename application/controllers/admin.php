@@ -1,7 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Admin extends Admin_Controller {
-
+    
+    /**
+     * @var string
+     */
+    private $_redirect_url;
+    
     /**
      * Constructor
      */
@@ -21,18 +26,10 @@ class Admin extends Admin_Controller {
      */
     public function index()
     {
-        // setup page header data
-        $this->header_data = array_merge_recursive($this->header_data, array(
-            'page_title' => lang('admin title admin')
-        ));
-        $data = $this->header_data;
-
-        // load views
-        $data['content'] = $this->load->view('admin/dashboard', NULL, TRUE);
-        $this->load->view('admin_template', $data);
+       redirect('admin/customers/'); 
     }
 
-
+    
     /**
      * Settings Editor
      */

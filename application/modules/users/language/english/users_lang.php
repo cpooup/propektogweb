@@ -12,6 +12,7 @@ $lang['users title user_add']                 = "Add User";
 $lang['users title user_delete']              = "Confirm Delete User";
 $lang['users title user_edit']                = "Edit User";
 $lang['users title user_list']                = "User List";
+$lang['users title account_login']            = "Use a local account to log in.";
 
 // Buttons
 $lang['users button add_new_user']            = "Add New User";
@@ -42,6 +43,7 @@ $lang['users input password_repeat']          = "Repeat Password";
 $lang['users input status']                   = "Status";
 $lang['users input username']                 = "Username";
 $lang['users input username_email']           = "Username or Email";
+$lang['users input remember']                 = "Remember me?";
 
 // Help
 $lang['users help passwords']                 = "Only enter passwords if you want to change it.";

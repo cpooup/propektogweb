@@ -11,3 +11,7 @@
     width: 100px !important;
     display: inline-block !important;
 }
+
+input, select, textarea {
+max-width: 280px;
+}

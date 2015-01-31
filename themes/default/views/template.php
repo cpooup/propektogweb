@@ -9,8 +9,6 @@
 
     <title><?php echo $page_title; ?> - <?php echo $site_title; ?></title>
 
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>themes/default/css/default.css?v=<?php echo $site_version; ?>">
 
     <?php if (isset($css_files) && is_array($css_files)) : ?>
@@ -109,8 +107,6 @@
 
     </div>
 
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <?php if (isset($js_files) && is_array($js_files)) : ?>
         <?php foreach ($js_files as $js) : ?>
             <?php if ( ! is_null($js)) : ?>

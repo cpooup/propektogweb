@@ -63,8 +63,14 @@ class Login extends Public_Controller {
         $this->header_data = array_merge_recursive($this->header_data, array(
             'page_title' => lang('users title login'),
             'css_files'  => array(
-                '/themes/default/css/login.css'
-            )
+                base_url("themes/default/css/bootstrap.min.css"),
+                base_url("themes/default/css/font-awesome.min.css"),
+                base_url('themes/default/css/login.css')
+            ),
+            'js_files' => array(
+                base_url("/themes/admin/js/jquery.min.js"),
+                base_url("/themes/admin/js/bootstrap.min.js")
+            ),
         ));
         $data = $this->header_data;
 
