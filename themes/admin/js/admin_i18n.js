@@ -245,3 +245,47 @@ BBApp.prototype.onUserEdit= function() {
     
     $('#users_form_edit').submit();
 };
+
+// Edit column view
+BBApp.prototype.onCustomerColumnEdit= function() {
+    $('#customers_column_form').submit();
+};
+
+// Add company
+BBApp.prototype.onCompanyAdd= function() {
+    // validate signup form on keyup and submit
+    $("#company_form").validate({
+            rules: {
+                    sitename: {
+                        required: true,
+                        remote: {
+                            url: config.baseURL+"company/company_availability/",
+                            type: "post",
+                            data:
+                                  {
+                                      password_current: function()
+                                      {
+                                          return $('#company_form :input[name="sitename"]').val();
+                                      },
+                                      csrf_token: function()
+                                      {
+                                          return $('#company_form :input[name="csrf_token"]').val();
+                                      }
+                                      
+                                  }
+                        }   
+                    }
+            },
+            messages: {
+                    sitename: {
+                        required: "Please enter company",
+                        remote: "The company already exists!"
+                    }
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+    });
+    
+    $('#company_form').submit();
+};

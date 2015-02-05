@@ -56,6 +56,9 @@ class Admin extends Admin_Controller {
         // get filters
         $filters = array();
         
+        if ($this->input->get('id'))
+            $filters['id'] = $this->input->get('id', TRUE);
+        
         if ($this->input->get('sitename'))
             $filters['sitename'] = $this->input->get('sitename', TRUE);
         
@@ -64,7 +67,6 @@ class Admin extends Admin_Controller {
 
         if ($this->input->get('email'))
             $filters['email'] = $this->input->get('email', TRUE);
-
         
         if ($this->input->get('comment'))
             $filters['comment'] = $this->input->get('comment', TRUE);
@@ -120,6 +122,9 @@ class Admin extends Admin_Controller {
             {
                 // apply the filter(s)
                 $filter = "";
+                if ($this->input->post('id'))
+                    $filters['id'] = $this->input->post('id', TRUE);
+                 
                 if ($this->input->post('sitename'))
                     $filters['sitename'] = $this->input->post('sitename', TRUE);
                 
@@ -226,18 +231,24 @@ class Admin extends Admin_Controller {
             );
         }else{
             $data['controls'] = array(
-                'add_new' => array(
-                    'bootstrap_button_class' => 'btn-primary',
-                    'bootstrap_icon_class'   => 'glyphicon-plus-sign',
-                    'url'                    => THIS_URL . '/add',
-                    'text'                   => lang('customers button add_new_user'),
-                    'tooltip'                => lang('customers tooltip add_new_user'),
-                    'data-target'            => '#myModal',
+                'setting_column' => array(
+                    'bootstrap_button_class' => 'btn-warning',
+                    'bootstrap_icon_class'   => 'glyphicon-pencil',
+                    'url'                    => THIS_URL . '/column',
+                    'text'                   => lang('customers button setting_column'),
+                    'tooltip'                => lang('customers tooltip setting_column'),
+                    'data-target'            => '#myModalColumn',
                     'data-toggle'            => 'modal'
                 )
             );
         }
         
+        // get the data column
+        $columns = $this->customers_model->get_column();
+        $filters_columns = array();
+        foreach ($columns['results'] as $column){
+            $filters_columns[$column['name']] = $column['status'];
+        }
 
         // set content data
         $content_data = array(
@@ -251,7 +262,8 @@ class Admin extends Admin_Controller {
             'offset'     => $offset,
             'sort'       => $sort,
             'dir'        => $dir,
-            'tab'        => $tab
+            'tab'        => $tab,
+            'column'      => $filters_columns
         );
 
         // load views
@@ -372,10 +384,10 @@ class Admin extends Admin_Controller {
      */
     public function column()
     {
-        // validators
-        $this->form_validation->set_error_delimiters($this->config->item('error_delimeter_left'), $this->config->item('error_delimeter_right'));
+        // get the data
+        $columns = $this->customers_model->get_column();
 
-        if ($this->form_validation->run($this) == TRUE)
+        if ($this->input->post())
         {
             // save the changes
             $saved = $this->customers_model->edit_column($this->input->post());
@@ -398,7 +410,9 @@ class Admin extends Admin_Controller {
         // set content data
         $content_data = array(
             'cancel_url'        => $this->_redirect_url,
-            'title'              => lang("customers title column_edit")
+            'title'             => lang("customers title column_edit"),
+            'columns'      => $columns['results'],
+            'total'      => $columns['total']
         );
         // load views
         $data['content'] = $this->load->view('admin/customers_column', $content_data, TRUE);
@@ -563,10 +577,7 @@ class Admin extends Admin_Controller {
                 unset($users['results'][$key]['sitename']);
                 unset($users['results'][$key]['site_id']);
             }
-//            echo '<pre>';
-//            print_r($users['results']);
-//            echo '</pre>';
-//            exit();
+            
             // export the file
             array_to_csv($users['results'], "customers");
         }

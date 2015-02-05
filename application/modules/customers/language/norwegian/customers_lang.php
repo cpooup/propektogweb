@@ -33,6 +33,7 @@ $lang['customers link forgot_password']           = "Forgot your password?";
 $lang['customers link register_account']          = "Register for an account.";
 
 // Table Columns New
+$lang['customers col id']                     = 'ID';
 $lang['customers col name']                     = 'Kundenavn';
 $lang['customers col email']                    = "Mailadresse";
 $lang['customers col day']                      = "Dag";
@@ -43,6 +44,10 @@ $lang['customers col updateby']                 = "Update by";
 $lang['customers col data_entry']               = "Data Entry";
 $lang['customers col posting']                  = "Posting";
 $lang['customers col sitename']                  = "Company";
+$lang['customers col created']                  = "Create Date";
+$lang['customers col deleted']                  = "Status";
+$lang['customers col choice']                  = "Oppgaver";
+$lang['customers col priority']                = "Prioritet";
 
 // Result Data Entry Day
 $lang['data_entry_monday1']                 = "mandag<br>";
@@ -84,6 +89,8 @@ $lang['customers select alternativ3']               = "Prekontering og Bokførin
 $lang['customers input priority']               = "Priority";
 $lang['customers select priority yes']               = "Yes";
 $lang['customers select priority no']               = "No";
+$lang['customers select priority1']               = "Yes";
+$lang['customers select priority0']               = "No";
 
 $lang['customers input first_name']               = "First Name";
 $lang['customers input is_admin']                 = "Is Admin";

@@ -69,22 +69,41 @@ class Core_model extends CI_Model {
                             $active = ' active';
                     }
                 }
+                if($this->config->item('master_sitename')==$this->config->item('sitename')){   
+                    $menu .= '<li class="' . ((is_array($submenu)) ? 'dropdown' : '') . $active . '">';
+                    $menu .= '<a href="' . base_url($row['url']) . '"' . ((is_array($submenu)) ? ' class="dropdown-toggle" data-toggle="dropdown"' : '') . '>';
+                    $menu .= $row['title'] . ((is_array($submenu)) ? ' <b class="caret"></b>' : '') . '</a>';
 
-                $menu .= '<li class="' . ((is_array($submenu)) ? 'dropdown' : '') . $active . '">';
-                $menu .= '<a href="' . base_url($row['url']) . '"' . ((is_array($submenu)) ? ' class="dropdown-toggle" data-toggle="dropdown"' : '') . '>';
-                $menu .= $row['title'] . ((is_array($submenu)) ? ' <b class="caret"></b>' : '') . '</a>';
+                    if (is_array($submenu))
+                    {
+                        $menu .= '<ul class="dropdown-menu">';
 
-                if (is_array($submenu))
-                {
-                    $menu .= '<ul class="dropdown-menu">';
+                        foreach ($submenu as $sub)
+                            $menu .= '<li class="' . (($current_uri == $sub['url']) ? 'active' : '') . '"><a href="' . base_url($sub['url']) . '">' . $sub['title'] . '</a></li>';
 
-                    foreach ($submenu as $sub)
-                        $menu .= '<li class="' . (($current_uri == $sub['url']) ? 'active' : '') . '"><a href="' . base_url($sub['url']) . '">' . $sub['title'] . '</a></li>';
+                        $menu .= '</ul>';
+                    }
 
-                    $menu .= '</ul>';
+                    $menu .= '</li>';
+                }else{
+                    if($row['title']!='Companies'){
+                        $menu .= '<li class="' . ((is_array($submenu)) ? 'dropdown' : '') . $active . '">';
+                        $menu .= '<a href="' . base_url($row['url']) . '"' . ((is_array($submenu)) ? ' class="dropdown-toggle" data-toggle="dropdown"' : '') . '>';
+                        $menu .= $row['title'] . ((is_array($submenu)) ? ' <b class="caret"></b>' : '') . '</a>';
+
+                        if (is_array($submenu))
+                        {
+                            $menu .= '<ul class="dropdown-menu">';
+
+                            foreach ($submenu as $sub)
+                                $menu .= '<li class="' . (($current_uri == $sub['url']) ? 'active' : '') . '"><a href="' . base_url($sub['url']) . '">' . $sub['title'] . '</a></li>';
+
+                            $menu .= '</ul>';
+                        }
+
+                        $menu .= '</li>';
+                    }
                 }
-
-                $menu .= '</li>';
             }
 
             $menu .= '</ul>';

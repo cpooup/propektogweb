@@ -147,7 +147,35 @@ class Customers_model extends CI_Model {
             return FALSE;
     }
 
+    /**
+     * Get specific column
+     * 
+     * @return array|bool
+     */
+    function get_column()
+    {
+        $sql = "
+                SELECT *
+                FROM customers_columns
+                WHERE site_id = ".$this->_sitename_id['id']."
+            ";
+        
+        $sql .= " ORDER BY ordering ASC";
+        
+        $query = $this->db->query($sql);
 
+        if ($query->num_rows() > 0)
+            $results['results'] = $query->result_array();
+        else
+            $results['results'] = NULL;
+
+        $sql = "SELECT FOUND_ROWS() AS total";
+        $query = $this->db->query($sql);
+        $results['total'] = $query->row()->total;
+        
+        return $results;
+    }
+    
     /**
      * Add a new customer
      *
@@ -279,6 +307,31 @@ class Customers_model extends CI_Model {
         }
     }
 
+    /**
+     * Edit an existing customer
+     * 
+     * @param array $data
+     * @return bool
+     */
+    function edit_column($data=array())
+    {
+        if (empty($data))
+            return FALSE;
+        
+        $affected_row = '';
+        foreach ($data as $key => $value) {
+            $sql = "
+                UPDATE customers_columns
+                SET
+                status = " . $this->db->escape($value) . "
+                WHERE site_id = " . $this->db->escape($this->_sitename_id['id']) . "
+                AND name = ". $this->db->escape($key) ."
+            ";
+            $this->db->query($sql);
+        }
+        return TRUE;
+    }
+    
     /**
      * Soft delete an existing customer
      * 

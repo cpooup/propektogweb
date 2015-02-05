@@ -143,6 +143,7 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>                
 <div class="modal fade" id="myModalColumn" tabindex="-1" role="dialog" aria-labelledby="myModalColumn" aria-hidden="true"></div>
 <div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myEditLabel" aria-hidden="true"></div>                
+<div class="modal fade" id="myModalCompany" tabindex="-1" role="dialog" aria-labelledby="myEditLabel" aria-hidden="true"></div>                
 
 </body>
 </html>
