@@ -26,7 +26,7 @@ class Admin extends Admin_Controller {
         define('THIS_URL', base_url('admin/users'));
         define('DEFAULT_LIMIT', $this->settings->per_page_limit);
         define('DEFAULT_OFFSET', 0);
-        define('DEFAULT_SORT', "last_name");
+        define('DEFAULT_SORT', "username");
         define('DEFAULT_DIR', "asc");
 
         // use the url in session (if available) to return to the previous filter/sorted/paginated list
@@ -58,13 +58,16 @@ class Admin extends Admin_Controller {
 
         if ($this->input->get('username'))
             $filters['username'] = $this->input->get('username', TRUE);
-
-        if ($this->input->get('first_name'))
-            $filters['first_name'] = $this->input->get('first_name', TRUE);
-
-        if ($this->input->get('last_name'))
-            $filters['last_name'] = $this->input->get('last_name', TRUE);
-
+        
+         if ($this->input->get('updated'))
+            $filters['updated'] = $this->input->get('updated', TRUE);
+        
+        if ($this->input->get('updateby'))
+            $filters['updateby'] = $this->input->get('updateby', TRUE);
+        
+        if ($this->input->get('deleted'))
+            $filters['deleted'] = $this->input->get('deleted', TRUE);
+        
         // build filter string
         $filter = "";
         foreach ($filters as $key=>$value)
@@ -88,13 +91,16 @@ class Admin extends Admin_Controller {
 
                 if ($this->input->post('username'))
                     $filter .= "&username=" . $this->input->post('username', TRUE);
+                
+                if ($this->input->post('updated'))
+                    $filters['updated'] = $this->input->post('updated', TRUE);
 
-                if ($this->input->post('first_name'))
-                    $filter .= "&first_name=" . $this->input->post('first_name', TRUE);
-
-                if ($this->input->post('last_name'))
-                    $filter .= "&last_name=" . $this->input->post('last_name', TRUE);
-
+                if ($this->input->post('updateby'))
+                    $filters['updateby'] = $this->input->post('updateby', TRUE);
+                
+                if ($this->input->post('deleted'))
+                   $filters['deleted'] = $this->input->post('deleted', TRUE);
+                
                 // redirect using new filter(s)
                 redirect(THIS_URL . "?sort={$sort}&dir={$dir}&limit={$limit}&offset={$offset}{$filter}");
             }
@@ -126,7 +132,9 @@ class Admin extends Admin_Controller {
                 'bootstrap_icon_class'   => 'glyphicon-plus-sign',
                 'url'                    => THIS_URL . '/add',
                 'text'                   => lang('users button add_new_user'),
-                'tooltip'                => lang('users tooltip add_new_user')
+                'tooltip'                => lang('users tooltip add_new_user'),
+                'data-target'            => '#myModal',
+                'data-toggle'            => 'modal'
             )
         );
 
@@ -158,28 +166,22 @@ class Admin extends Admin_Controller {
         // validators
         $this->form_validation->set_error_delimiters($this->config->item('error_delimeter_left'), $this->config->item('error_delimeter_right'));
         $this->form_validation->set_rules('username', lang('admin input username'), 'required|trim|xss_clean|min_length[5]|max_length[30]|callback__check_username[]');
-        $this->form_validation->set_rules('first_name', lang('users input first_name'), 'required|trim|xss_clean|min_length[2]|max_length[32]');
-        $this->form_validation->set_rules('last_name', lang('users input last_name'), 'required|trim|xss_clean|min_length[2]|max_length[32]');
-        $this->form_validation->set_rules('email', lang('users input email'), 'required|trim|xss_clean|max_length[128]|valid_email|callback__check_email[]');
-        $this->form_validation->set_rules('status', lang('users input is_admin'), 'required|xss_clean|numeric');
-        $this->form_validation->set_rules('is_admin', lang('users input status'), 'required|xss_clean|numeric');
         $this->form_validation->set_rules('password', lang('users input password'), 'required|trim|xss_clean|min_length[5]');
         $this->form_validation->set_rules('password_repeat', lang('users input password_repeat'), 'required|trim|xss_clean|matches[password]');
-
         if ($this->form_validation->run($this) == TRUE)
         {
             // save the new user
             $saved = $this->users_model->add_user($this->input->post());
 
             if ($saved)
-                $this->session->set_flashdata('message', sprintf(lang('users msg add_user_success'), $this->input->post('first_name') . " " . $this->input->post('last_name')));
+                $this->session->set_flashdata('message', sprintf(lang('users msg add_user_success'), $this->input->post('username')));
             else
-                $this->session->set_flashdata('error', sprintf(lang('users error add_user_failed'), $this->input->post('first_name') . " " . $this->input->post('last_name')));
+                $this->session->set_flashdata('error', sprintf(lang('users error add_user_failed'), $this->input->post('username')));
 
             // return to list and display message
             redirect($this->_redirect_url);
         }
-
+        
         // setup page header data
         $this->header_data = array_merge_recursive($this->header_data, array(
             'page_title'  => lang('users title user_add')
@@ -190,12 +192,15 @@ class Admin extends Admin_Controller {
         $content_data = array(
             'cancel_url'        => $this->_redirect_url,
             'user'              => NULL,
+            'title'              => lang("users button add_new_user"),
             'password_required' => TRUE
         );
 
         // load views
         $data['content'] = $this->load->view('admin/users_form', $content_data, TRUE);
-        $this->load->view('admin_template', $data);
+        echo $data['content'];
+        exit();
+        //$this->load->view('admin_template', $data);
     }
 
 
@@ -206,6 +211,8 @@ class Admin extends Admin_Controller {
      */
     public function edit($id=NULL)
     {
+        $user = $this->session->userdata('logged_in');
+        $id = $user['id'];
         // make sure we have a numeric id
         if (is_null($id) || ! is_numeric($id))
             redirect($this->_redirect_url);
@@ -219,14 +226,9 @@ class Admin extends Admin_Controller {
 
         // validators
         $this->form_validation->set_error_delimiters($this->config->item('error_delimeter_left'), $this->config->item('error_delimeter_right'));
-        $this->form_validation->set_rules('username', lang('admin input username'), 'required|trim|xss_clean|min_length[5]|max_length[30]|callback__check_username[' . $user['username'] . ']');
-        $this->form_validation->set_rules('first_name', lang('users input first_name'), 'required|trim|xss_clean|min_length[2]|max_length[32]');
-        $this->form_validation->set_rules('last_name', lang('users input last_name'), 'required|trim|xss_clean|min_length[2]|max_length[32]');
-        $this->form_validation->set_rules('email', lang('users input email'), 'required|trim|xss_clean|max_length[128]|valid_email|callback__check_email[' . $user['email'] . ']');
-        $this->form_validation->set_rules('status', lang('users input status'), 'required|numeric');
-        $this->form_validation->set_rules('is_admin', lang('users input is_admin'), 'required|numeric');
-        $this->form_validation->set_rules('password', lang('users input password'), 'min_length[5]|matches[password_repeat]');
-        $this->form_validation->set_rules('password_repeat', lang('users input password_repeat'), '');
+        $this->form_validation->set_rules('password', lang('users input password'), 'required|trim|xss_clean|min_length[5]');
+        $this->form_validation->set_rules('password_repeat', lang('users input password_repeat'), 'required|trim|xss_clean|matches[password]');
+        $this->form_validation->set_rules('password_current', lang('users input password_current'), 'required|trim|xss_clean|callback__check_password[]');
 
         if ($this->form_validation->run($this) == TRUE)
         {
@@ -234,9 +236,9 @@ class Admin extends Admin_Controller {
             $saved = $this->users_model->edit_user($this->input->post());
 
             if ($saved)
-                $this->session->set_flashdata('message', sprintf(lang('users msg edit_user_success'), $this->input->post('first_name') . " " . $this->input->post('last_name')));
+                $this->session->set_flashdata('message', sprintf(lang('users msg edit_user_success'), $this->input->post('username')));
             else
-                $this->session->set_flashdata('error', sprintf(lang('users error edit_user_failed'), $this->input->post('first_name') . " " . $this->input->post('last_name')));
+                $this->session->set_flashdata('error', sprintf(lang('users error edit_user_failed'), $this->input->post('username')));
 
             // return to list and display message
             redirect($this->_redirect_url);
@@ -253,12 +255,15 @@ class Admin extends Admin_Controller {
             'cancel_url'        => $this->_redirect_url,
             'user'              => $user,
             'user_id'           => $id,
+            'title'           => lang("users manage account"),
             'password_required' => FALSE
         );
 
         // load views
-        $data['content'] = $this->load->view('admin/users_form', $content_data, TRUE);
-        $this->load->view('admin_template', $data);
+        $data['content'] = $this->load->view('admin/users_edit', $content_data, TRUE);
+        echo $data['content'];
+        exit();
+        //$this->load->view('admin_template', $data);
     }
 
 
@@ -277,13 +282,17 @@ class Admin extends Admin_Controller {
 
             if ($user)
             {
-                // soft-delete the user
-                $delete = $this->users_model->delete_user($id);
 
+                if($this->config->item('master_sitename')==$this->config->item('sitename')){
+                    $delete = $this->users_model->delete_master_user($id);
+                }else{
+                    // soft-delete the user
+                    $delete = $this->users_model->delete_user($id);
+                }
                 if ($delete)
-                    $this->session->set_flashdata('message', sprintf(lang('users msg delete_user'), $user['first_name'] . " " . $user['last_name']));
+                    $this->session->set_flashdata('message', sprintf(lang('users msg delete_user'), $user['username'] ));
                 else
-                    $this->session->set_flashdata('error', sprintf(lang('users error delete_user'), $user['first_name'] . " " . $user['last_name']));
+                    $this->session->set_flashdata('error', sprintf(lang('users error delete_user'), $user['username'] ));
             }
             else
             {
@@ -299,59 +308,47 @@ class Admin extends Admin_Controller {
         redirect($this->_redirect_url);
     }
 
-
     /**
-     * Export list to CSV
+     * Make sure username is available for ajax
+     *
+     * @param string $username
+     * @param string|null $current
+     * @return bool|int
      */
-    function export()
+    public function user_availability()
     {
-        // get parameters
-        $sort = $this->input->get('sort') ? $this->input->get('sort', TRUE) : DEFAULT_SORT;
-        $dir  = $this->input->get('dir')  ? $this->input->get('dir', TRUE)  : DEFAULT_DIR;
-
-        // get filters
-        $filters = array();
-
-        if ($this->input->get('username'))
-            $filters['username'] = $this->input->get('username', TRUE);
-
-        if ($this->input->get('first_name'))
-            $filters['first_name'] = $this->input->get('first_name', TRUE);
-
-        if ($this->input->get('last_name'))
-            $filters['last_name'] = $this->input->get('last_name', TRUE);
-
-        // get all users
-        $users = $this->users_model->get_all(0, 0, $filters, $sort, $dir);
-
-        if ($users['total'] > 0)
-        {
-            // manipulate the output array
-            foreach ($users['results'] as $key=>$user)
+        if ($this->input->post('username')){
+            $username = $this->input->post('username', TRUE);
+            if ($this->users_model->username_exists($username))
             {
-                unset($users['results'][$key]['password']);
-                unset($users['results'][$key]['deleted']);
-
-                if ($user['status'] == 0)
-                    $users['results'][$key]['status'] = lang('admin input inactive');
-                else
-                    $users['results'][$key]['status'] = lang('admin input active');
+               echo "false";
+            }else{
+               echo "true";
             }
-
-            // export the file
-            array_to_csv($users['results'], "users");
+        }else{
+            echo "false";
         }
-        else
-        {
-            // nothing to export
-            $this->session->set_flashdata('error', lang('core error no_results'));
-            redirect($this->_redirect_url);
-        }
-
-        exit;
     }
-
-
+    
+    /**
+     * Make sure password is match for ajax
+     *
+     */
+    public function user_password_current()
+    {
+        if ($this->input->post('password_current')){
+            $password_current = $this->input->post('password_current', TRUE);
+            if ($this->users_model->user_password($password_current))
+            {
+               echo "true";
+            }else{
+               echo "false";
+            }
+        }else{
+            echo "true";
+        }
+    }
+    
     /**************************************************************************************
      * PRIVATE VALIDATION CALLBACK FUNCTIONS
      **************************************************************************************/
@@ -374,25 +371,24 @@ class Admin extends Admin_Controller {
         else
             return $username;
     }
-
-
+    
     /**
-     * Make sure email is available
+     * Make sure username is available
      *
-     * @param string $email
+     * @param string $username
      * @param string|null $current
      * @return bool|int
      */
-    function _check_email($email, $current)
-    {
-        if (trim($email) != trim($current) && $this->users_model->email_exists($email))
-        {
-            $this->form_validation->set_message('_check_email', sprintf(lang('users error email_exists'), $email));
+    function _check_password($password, $current)
+    { 
+        if (trim($password) != trim($current) && !$this->users_model->user_password($password))
+        { 
+            $this->form_validation->set_message('_check_password', sprintf(lang('password error not match'), $password));
             return FALSE;
         }
-        else
-            return $email;
+        else{
+            return $password;
+        }
     }
-
 
 }

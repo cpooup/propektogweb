@@ -17,6 +17,7 @@ class Users_model extends CI_Model {
 
         // define primary table
         $this->_db = 'users';
+        $this->_sitename_id = $this->get_sitename_id();
     }
 
 
@@ -30,13 +31,27 @@ class Users_model extends CI_Model {
      * @param string $dir
      * @return array|bool
      */
-    function get_all($limit=0, $offset=0, $filters=array(), $sort='last_name', $dir='ASC')
+    function get_all($limit=0, $offset=0, $filters=array(), $sort='username', $dir='ASC')
     {
-        $sql = "
-            SELECT SQL_CALC_FOUND_ROWS *
-            FROM {$this->_db}
-            WHERE deleted = '0'
-        ";
+        $user = $this->session->userdata('logged_in');
+        if($this->config->item('master_sitename')==$this->config->item('sitename')){
+            $sql = "
+                SELECT SQL_CALC_FOUND_ROWS u.*,s.sitename,uu.username as createby
+                FROM {$this->_db} as u
+                LEFT JOIN sitename as s ON s.id = u.site_id
+                LEFT JOIN users as uu ON uu.id = u.updateby
+                WHERE u.id != ".$user['id']."
+            ";
+        }else{
+            $sql = "
+                SELECT SQL_CALC_FOUND_ROWS u.*,s.sitename,uu.username as createby
+                FROM {$this->_db} as u
+                LEFT JOIN sitename as s ON s.id = u.site_id
+                LEFT JOIN users as uu ON uu.id = u.updateby
+                WHERE u.deleted = '0' AND u.id != ".$user['id']." 
+                AND u.site_id =".$this->_sitename_id['id']."
+            ";
+        }
 
         if ( ! empty($filters))
         {
@@ -81,14 +96,21 @@ class Users_model extends CI_Model {
     {
         if (is_null($id))
             return FALSE;
-
-        $sql = "
-            SELECT *
-            FROM {$this->_db}
-            WHERE id = " . $this->db->escape($id) . "
-                AND deleted = '0'
-        ";
-                
+        if($this->config->item('master_sitename')==$this->config->item('sitename')){
+            $sql = "
+                SELECT *
+                FROM {$this->_db}
+                WHERE id = " . $this->db->escape($id) . "
+            ";
+        }else{
+            $sql = "
+                SELECT *
+                FROM {$this->_db}
+                WHERE id = " . $this->db->escape($id) . "
+                    AND deleted = '0'
+            ";
+        }
+   
         $query = $this->db->query($sql);
 
         if ($query->num_rows())
@@ -108,26 +130,25 @@ class Users_model extends CI_Model {
     {
         if (empty($data))
             return FALSE;
-
+        $user = $this->session->userdata('logged_in');
         // secure password
         $salt     = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), TRUE));
         $password = hash('sha512', $data['password'] . $salt);
 
         $sql = "
             INSERT INTO {$this->_db} (
-                username, password, salt, first_name, last_name, email, is_admin, status, deleted, created, updated
+                username, password, salt, viewpass, is_admin, deleted, created, updated, updateby, site_id
             ) VALUES (
                 " . $this->db->escape($data['username']) . ",
                 " . $this->db->escape($password) . ",
                 " . $this->db->escape($salt) . ",
-                " . $this->db->escape($data['first_name']) . ",
-                " . $this->db->escape($data['last_name']) . ",
-                " . $this->db->escape($data['email']) . ",
+                " . $this->db->escape($data['password']) . ",
                 " . $this->db->escape($data['is_admin']) . ",
-                " . $this->db->escape($data['status']) . ",
                 '0',
                 '" . date('Y-m-d H:i:s') . "',
-                '" . date('Y-m-d H:i:s') . "'
+                '" . date('Y-m-d H:i:s') . "',
+                " . $this->db->escape($user['id']) . " ,
+                " . $this->db->escape($this->_sitename_id['id']) . " 
             )
         ";
 
@@ -139,51 +160,18 @@ class Users_model extends CI_Model {
             return FALSE;
     }
 
-
-    /**
-     * User creates their own profile
-     *
-     * @param array $data
-     * @return mixed|bool
-     */
-    function create_profile($data=array())
+    // Get sitename id
+    function get_sitename_id()
     {
-        if (empty($data))
-            return FALSE;
+         $sql = "SELECT id FROM sitename as s WHERE s.sitename like '".$this->config->item('sitename')."'";
+         $query = $this->db->query($sql);
 
-        // secure password and create validation code
-        $salt            = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), TRUE));
-        $password        = hash('sha512', $data['password'] . $salt);
-        $validation_code = sha1(microtime(TRUE) . mt_rand(10000, 90000));
-
-        $sql = "
-            INSERT INTO {$this->_db} (
-                username, password, salt, first_name, last_name, email, is_admin, status, deleted, validation_code, created, updated
-            ) VALUES (
-                " . $this->db->escape($data['username']) . ",
-                " . $this->db->escape($password) . ",
-                " . $this->db->escape($salt) . ",
-                " . $this->db->escape($data['first_name']) . ",
-                " . $this->db->escape($data['last_name']) . ",
-                " . $this->db->escape($data['email']) . ",
-                '0',
-                '0',
-                '0',
-                " . $this->db->escape($validation_code) . ",
-                '" . date('Y-m-d H:i:s') . "',
-                '" . date('Y-m-d H:i:s') . "'
-            )
-        ";
-
-        $this->db->query($sql);
-
-        if ($this->db->insert_id())
-            return $validation_code;
+        if ($query->num_rows())
+            return $query->row_array();
         else
-            return FALSE;
+            return FALSE;   
     }
-
-
+    
     /**
      * Edit an existing user
      * 
@@ -194,11 +182,10 @@ class Users_model extends CI_Model {
     {
         if (empty($data))
             return FALSE;
-
+        $user = $this->session->userdata('logged_in');
         $sql = "
             UPDATE {$this->_db}
             SET
-                username = " . $this->db->escape($data['username']) . ",
         ";
 
         if ($data['password'] != '')
@@ -214,12 +201,9 @@ class Users_model extends CI_Model {
         }
 
         $sql .= "
-                first_name = " . $this->db->escape($data['first_name']) . ",
-                last_name = " . $this->db->escape($data['last_name']) . ",
-                email = " . $this->db->escape($data['email']) . ",
-                is_admin = " . $this->db->escape($data['is_admin']) . ",
-                status = " . $this->db->escape($data['status']) . ",
-                updated = '" . date('Y-m-d H:i:s') . "'
+                viewpass = " . $this->db->escape($data['password']) . ",
+                updated = '" . date('Y-m-d H:i:s') . "',
+                updateby = " . $this->db->escape($user['id']) . "    
             WHERE id = " . $this->db->escape($data['id']) . "
                 AND deleted = '0'
         ";
@@ -232,55 +216,6 @@ class Users_model extends CI_Model {
             return FALSE;        
     }
 
-
-    /**
-     * User edits their own profile
-     *
-     * @param array $data
-     * @param int $user_id
-     * @return bool
-     */
-    function edit_profile($data=array(), $user_id=NULL)
-    {
-        if (empty($data) || is_null($user_id))
-            return FALSE;
-
-        $sql = "
-            UPDATE {$this->_db}
-            SET
-                username = " . $this->db->escape($data['username']) . ",
-        ";
-
-        if ($data['password'] != '')
-        {
-            // secure password
-            $salt     = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), TRUE));
-            $password = hash('sha512', $data['password'] . $salt);
-
-            $sql .= "
-                password = " . $this->db->escape($password) . ",
-                salt = " . $this->db->escape($salt) . ",
-            ";
-        }
-
-        $sql .= "
-                first_name = " . $this->db->escape($data['first_name']) . ",
-                last_name = " . $this->db->escape($data['last_name']) . ",
-                email = " . $this->db->escape($data['email']) . ",
-                updated = '" . date('Y-m-d H:i:s') . "'
-            WHERE id = " . $this->db->escape($user_id) . "
-                AND deleted = '0'
-        ";
-
-        $this->db->query($sql);
-
-        if ($this->db->affected_rows())
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-
     /**
      * Soft delete an existing user
      * 
@@ -291,14 +226,13 @@ class Users_model extends CI_Model {
     {
         if (is_null($id))
             return FALSE;
-
+        $user = $this->session->userdata('logged_in');
         $sql = "
             UPDATE {$this->_db}
             SET
-                is_admin = '0',
-                status = '0',
                 deleted = '1',
-                updated = '" . date('Y-m-d H:i:s') . "'
+                updated = '" . date('Y-m-d H:i:s') . "',
+                updateby = " . $this->db->escape($user['id']) . "
             WHERE id = " . $this->db->escape($id) . "
                 AND id > 1
         ";
@@ -311,6 +245,27 @@ class Users_model extends CI_Model {
             return FALSE;
     }
 
+    
+    /**
+     * Master delete an existing customer
+     * 
+     * @param int $id
+     * @return bool
+     */
+    function delete_master_user($id=NULL)
+    {
+        if (is_null($id))
+            return FALSE;
+        
+        $this->db->query("DELETE FROM {$this->_db} WHERE id = ".$this->db->escape($id));
+        
+        $user = $this->get_user($id);
+        
+        if (!$user)
+            return TRUE;
+        else
+            return FALSE;
+    }
 
     /**
      * Check for valid login credentials
@@ -330,17 +285,16 @@ class Users_model extends CI_Model {
                 username,
                 password,
                 salt,
-                first_name,
-                last_name,
-                email,
+                viewpass,
                 is_admin,
-                status,
+                deleted,
                 created,
-                updated
+                updated,
+                site_id,
+                updateby
             FROM {$this->_db}
-            WHERE (username = " . $this->db->escape($username) . "
-                    OR email = " . $this->db->escape($username) . ")
-                AND status = '1'
+            WHERE (username = " . $this->db->escape($username) . ")
+                AND site_id =(SELECT id FROM sitename as s WHERE s.sitename like '".$this->config->item('sitename')."')
                 AND deleted = '0'
             LIMIT 1
         ";
@@ -370,112 +324,7 @@ class Users_model extends CI_Model {
 
     }
 
-
-    /**
-     * Validate a user-created account
-     *
-     * @param null $encrypted_email
-     * @param null $validation_code
-     * @return bool
-     */
-    function validate_account($encrypted_email=NULL, $validation_code=NULL)
-    {
-        if (is_null($encrypted_email) || is_null($validation_code))
-            return FALSE;
-
-        $sql = "
-            SELECT id
-            FROM {$this->_db}
-            WHERE SHA1(email) = " . $this->db->escape($encrypted_email) . "
-                AND validation_code = " . $this->db->escape($validation_code) . "
-                AND status = '0'
-                AND deleted = '0'
-            LIMIT 1
-        ";
-
-        $query = $this->db->query($sql);
-
-        if ($query->num_rows())
-        {
-            $results = $query->row_array();
-
-            $sql = "
-                UPDATE {$this->_db}
-                SET status = '1',
-                    validation_code = NULL
-                WHERE id = '" . $results['id'] . "'
-            ";
-
-            $this->db->query($sql);
-
-            if ($this->db->affected_rows())
-                return TRUE;
-            else
-                return FALSE;
-        }
-        else
-        {
-            return FALSE;
-        }
-    }
-
-
-    /**
-     * Reset password
-     *
-     * @param array $data
-     * @return mixed|bool
-     */
-    function reset_password($data=array())
-    {
-        if (empty($data))
-            return FALSE;
-
-        $sql = "
-            SELECT
-                id,
-                first_name
-            FROM {$this->_db}
-            WHERE email = " . $this->db->escape($data['email']) . "
-                AND status = '1'
-                AND deleted = '0'
-            LIMIT 1
-        ";
-
-        $query = $this->db->query($sql);
-
-        if ($query->num_rows())
-        {
-            // get user info
-            $user = $query->row_array();
-
-            // create new random password
-            $user_data['new_password'] = generate_random_password();
-            $user_data['first_name']   = $user['first_name'];
-
-            // create new salt and stored password
-            $salt     = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), TRUE));
-            $password = hash('sha512', $user_data['new_password'] . $salt);
-
-            $sql = "
-                UPDATE {$this->_db} SET
-                    password = " . $this->db->escape($password) . ",
-                    salt = " . $this->db->escape($salt) . "
-                WHERE id = " . $this->db->escape($user['id']) . "
-            ";
-
-            $this->db->query($sql);
-
-            if ($this->db->affected_rows())
-                return $user_data;
-            else
-                return FALSE;
-        }
-
-        return FALSE;
-    }
-
-
+    
     /**
      * Check to see if a username already exists
      *
@@ -498,29 +347,51 @@ class Users_model extends CI_Model {
         else
             return FALSE;
     }
-
-
+    
     /**
-     * Check to see if an email already exists
+     * Check to see if a password match
      *
-     * @param string $email
+     * @param string $password_current
      * @return bool
      */
-    function email_exists($email)
+    function user_password($password_current)
     {
+        $user = $this->session->userdata('logged_in');
         $sql = "
-            SELECT id
+            SELECT
+                id,
+                username,
+                password,
+                salt,
+                viewpass,
+                is_admin,
+                deleted,
+                created,
+                updated,
+                site_id,
+                updateby
             FROM {$this->_db}
-            WHERE email = " . $this->db->escape($email) . "
+            WHERE (username = " . $this->db->escape($user['username']) . ")
+                AND site_id =(SELECT id FROM sitename as s WHERE s.sitename like '".$this->config->item('sitename')."')
+                AND deleted = '0'
             LIMIT 1
         ";
-
         $query = $this->db->query($sql);
-
         if ($query->num_rows())
-            return TRUE;
-        else
-            return FALSE;
-    }
+        {
+            $results = $query->row_array();
+            $salted_password = hash('sha512', $password_current . $results['salt']);
 
+            if ($results['password'] == $salted_password)
+            {
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }else{
+            return FALSE;
+        }
+    }
 }

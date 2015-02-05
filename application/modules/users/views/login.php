@@ -1,4 +1,4 @@
-<?php echo form_open('', array('class'=>'form-horizontal')); ?>
+<?php echo form_open('login','', array('class'=>'form-horizontal')); ?>
 <h4><?php echo lang('users title account_login');?></h4>
 <hr>
 <div class="form-group">

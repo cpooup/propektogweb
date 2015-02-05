@@ -102,7 +102,7 @@
         <div class="padding-override">
             <?php echo $content; ?>
 
-            <footer class="row footer text-muted"><br />Page rendered in <strong>{elapsed_time}</strong> seconds</footer>
+            <!--<footer class="row footer text-muted"><br />Page rendered in <strong>{elapsed_time}</strong> seconds</footer>-->
         </div>
 
     </div>

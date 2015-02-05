@@ -183,6 +183,7 @@ class Admin_Controller extends MY_Controller {
             'js_files' => array(
                 base_url("/themes/admin/js/jquery.min.js"),
                 base_url("/themes/admin/js/bootstrap.min.js"),
+                base_url("/themes/admin/js/jquery.validate.min.js"),
                 base_url("/themes/admin/js/tinymce.min.js")
             ),
             'js_files_i18n' => array(

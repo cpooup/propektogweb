@@ -40,7 +40,7 @@
                 <?php echo $this->admin_nav; ?>
                 <?php // Nav bar right ?>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="<?php echo base_url('logout'); ?>">
+                    <li><a data-toggle="modal" data-target="#myEdit" href="<?php echo base_url('admin/users/edit/'); ?>">
                         <?php 
                              $user = $this->session->userdata('logged_in');
                              echo sprintf(lang('admin label username'), $user['username']); 
@@ -61,13 +61,22 @@
 <!--            <div class="row">
                 <h1><?php echo $page_title; ?></h1>
             </div>-->
-
+            <?php if (isset($tabs)) : ?>
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <?php foreach ($tabs as $tab) : ?>
+                            <li role="presentation" class="<?php echo ($tab['active']) ? $tab['active'] : ''; ?>"><a href="<?php echo $tab['url']; ?>"><?php echo $tab['text']; ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <?php // Main controls ?>
             <div class="row text-right">
                 <?php if (isset($controls)) : ?>
                     <br />
                     <?php foreach ($controls as $control) : ?>
-                        <a class="btn <?php echo $control['bootstrap_button_class']; ?>" href="<?php echo $control['url']; ?>" title="<?php echo ($control['tooltip']) ? $control['tooltip'] : $control['text']; ?>" data-toggle="<?php echo ($control['tooltip']) ? 'tooltip' : ''; ?>"><span class="glyphicon <?php echo $control['bootstrap_icon_class']; ?>"></span> <?php echo $control['text']; ?></a>
+                        <a class="btn <?php echo $control['bootstrap_button_class']; ?>" href="<?php echo $control['url']; ?>" title="<?php echo ($control['tooltip']) ? $control['tooltip'] : $control['text']; ?>" data-toggle="<?php echo ($control['data-toggle']) ? $control['data-toggle'] : ''; ?>" data-target="<?php echo ($control['data-target']) ? $control['data-target']: ''; ?>"><span class="glyphicon <?php echo $control['bootstrap_icon_class']; ?>"></span> <?php echo $control['text']; ?></a>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
@@ -110,7 +119,7 @@
         <div class="padding-override">
             <?php echo $content; ?>
 
-            <footer class="row footer text-muted"><br />Page rendered in <strong>{elapsed_time}</strong> seconds</footer>
+            <!--<footer class="row footer text-muted"><br />Page rendered in <strong>{elapsed_time}</strong> seconds</footer>-->
         </div>
 
     </div>
@@ -130,6 +139,10 @@
             <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>                
+<div class="modal fade" id="myModalColumn" tabindex="-1" role="dialog" aria-labelledby="myModalColumn" aria-hidden="true"></div>
+<div class="modal fade" id="myEdit" tabindex="-1" role="dialog" aria-labelledby="myEditLabel" aria-hidden="true"></div>                
 
 </body>
 </html>

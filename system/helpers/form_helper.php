@@ -40,7 +40,7 @@
  */
 if ( ! function_exists('form_open'))
 {
-	function form_open($action = '', $attributes = '', $hidden = array())
+	function form_open($name='admin',$action = '', $attributes = '', $hidden = array())
 	{
 		$CI =& get_instance();
 
@@ -58,7 +58,7 @@ if ( ! function_exists('form_open'))
 		// If no action is provided then set to the current url
 		$action OR $action = $CI->config->site_url($CI->uri->uri_string());
 
-		$form = '<form action="'.$action.'"';
+		$form = '<form id="'.$name.'" name="'.$name.'" action="'.$action.'"';
 
 		$form .= _attributes_to_string($attributes, TRUE);
 
@@ -533,6 +533,41 @@ if ( ! function_exists('form_label'))
 		$label .= ">$label_text</label>";
 
 		return $label;
+	}
+}
+
+/**
+ * Form Span Tag
+ *
+ * @access	public
+ * @param	string	The text to appear onscreen
+ * @param	string	The id the span applies to
+ * @param	string	Additional attributes
+ * @return	string
+ */
+if ( ! function_exists('form_span'))
+{
+	function form_span($span_text = '', $id = '', $attributes = array())
+	{
+
+		$span = '<span';
+
+		if ($id != '')
+		{
+			$span .= " for=\"$id\"";
+		}
+
+		if (is_array($attributes) AND count($attributes) > 0)
+		{
+			foreach ($attributes as $key => $val)
+			{
+				$span .= ' '.$key.'="'.$val.'"';
+			}
+		}
+
+		$span .= ">$span_text</span>";
+
+		return $span;
 	}
 }
 
