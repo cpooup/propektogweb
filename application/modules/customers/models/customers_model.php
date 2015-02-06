@@ -34,6 +34,7 @@ class Customers_model extends CI_Model {
      */
     function get_all($limit=0, $offset=0, $filters=array(), $sort='name', $dir='ASC',$filters_tabs=array())
     {   
+        
         if($this->config->item('master_sitename')==$this->config->item('sitename')){
             $sql = "
                 SELECT SQL_CALC_FOUND_ROWS c.*,d.*,p.*,u.username,s.sitename
@@ -189,11 +190,10 @@ class Customers_model extends CI_Model {
         $user = $this->session->userdata('logged_in');
         $sql = "
             INSERT INTO {$this->_db} (
-                name, email, choice, priority, approveby,comment , created, updated, updateby, site_id
+                name, email, priority, approveby,comment , created, updated, updateby, site_id
             ) VALUES (
                 " . $this->db->escape($data['name']) . ",
                 " . $this->db->escape($data['email']) . ",
-                " . $this->db->escape($data['choice']) . ",
                 " . $this->db->escape($data['priority']) . ",
                 " . $this->db->escape($data['comment']) . ",
                 " . $this->db->escape($data['approveby']) . ",
@@ -207,6 +207,7 @@ class Customers_model extends CI_Model {
         $this->db->query($sql);
 
         if ($id = $this->db->insert_id()){
+            log_message('info', sprintf(lang('log add_customer'), $user['username'],$data['name'],$this->config->item('sitename')));
             $sql = "
                 INSERT INTO data_entry (
                     customer_id, data_entry_monday, data_entry_tuesday, data_entry_wednesday, data_entry_thursday, data_entry_friday
@@ -267,7 +268,6 @@ class Customers_model extends CI_Model {
             SET
             name = " . $this->db->escape($data['name']) . ",
             email = " . $this->db->escape($data['email']) . ",
-            choice = " . $this->db->escape($data['choice']) . ",
             priority = " . $this->db->escape($data['priority']) . ",
             approveby = " . $this->db->escape($data['approveby']) . ",
             comment = " . $this->db->escape($data['comment']) . ",    
@@ -279,6 +279,7 @@ class Customers_model extends CI_Model {
         $this->db->query($sql);
         
         if ($this->db->affected_rows()){
+             log_message('info', sprintf(lang('log edit_customer'), $user['username'],$data['name'],$this->config->item('sitename')));
             $sql = "
                 UPDATE data_entry
                 SET
@@ -317,7 +318,7 @@ class Customers_model extends CI_Model {
     {
         if (empty($data))
             return FALSE;
-        
+        $user = $this->session->userdata('logged_in');
         $affected_row = '';
         foreach ($data as $key => $value) {
             $sql = "
@@ -329,6 +330,7 @@ class Customers_model extends CI_Model {
             ";
             $this->db->query($sql);
         }
+        log_message('info', sprintf(lang('log edit_column'), $user['username'],$this->config->item('sitename')));
         return TRUE;
     }
     
@@ -342,6 +344,9 @@ class Customers_model extends CI_Model {
     {
         if (is_null($id))
             return FALSE;
+        
+        $customer = $this->get_customer($id);
+        
         $user = $this->session->userdata('logged_in');
         $sql = "
             UPDATE {$this->_db}
@@ -355,10 +360,12 @@ class Customers_model extends CI_Model {
 
         $this->db->query($sql);
         
-        if ($this->db->affected_rows())
+        if ($this->db->affected_rows()){
+            log_message('info', sprintf(lang('log delete_customer'), $user['username'],$customer['name'],$this->config->item('sitename')));
             return TRUE;
-        else
+        }else{
             return FALSE;
+        }
     }
     
     /**
@@ -371,15 +378,18 @@ class Customers_model extends CI_Model {
     {
         if (is_null($id))
             return FALSE;
-        
+        $customer_data = $this->get_customer($id);
+        $user = $this->session->userdata('logged_in');
         $this->db->query("DELETE FROM {$this->_db} WHERE id = ".$this->db->escape($id));
         
         $customer = $this->get_customer($id);
         
-        if (!$customer)
+        if (!$customer){
+            log_message('info', sprintf(lang('log master_delete_customer'), $user['username'],$customer_data['name'],$customer_data['sitename'],$this->config->item('sitename')));
             return TRUE;
-        else
+        }else{
             return FALSE;
+        }
     }
 
 }

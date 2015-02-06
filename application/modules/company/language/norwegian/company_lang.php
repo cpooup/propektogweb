@@ -14,9 +14,14 @@ $lang['users title user_edit']                = "Edit User";
 $lang['users title user_list']                = "User List";
 $lang['users title account_login']            = "Use a local account to log in.";
 $lang['users manage account']            = "Manage Account";
-
+$lang['users title edit_logo'] = "Edit Logo";
+$lang['users title Logo'] = "Logo";
+$lang['log'] = "Log";
+$lang['detail'] = "Detail";
+$lang['view'] = "View";
 
 // Buttons
+
 $lang['users button add_new_user']            = "Add New Company";
 $lang['users button register']                = "Create Account";
 $lang['users button reset_password']          = "Reset Password";
@@ -57,6 +62,7 @@ $lang['users input new_password']                 = "New password";
 $lang['users input new_password_repeat']          = "Confirm new password";
 $lang['company input enter_sitename']          = "Please enter company name";
 $lang['users input sitename']          = "Company";
+$lang['users input logo']          = "Logo";
 
 
 
@@ -97,3 +103,9 @@ $lang['users error user_not_exist']           = "That user does not exist!";
 $lang['users error username_exists']          = "The username <strong>%s</strong> already exists!";
 $lang['users error validate_failed']          = "There was a problem validating your account. Please try again.";
 $lang['password error not match']             = "Password do not match.";
+
+$lang['users msg edit_logo_success']           = "Logo was successfully added!";
+$lang['users error edit_logo_failed']           = "Logo could not be modified!";
+
+//Log file
+$lang['log add_company']                 = "'%s' was add company '%s'";

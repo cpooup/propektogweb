@@ -39,11 +39,12 @@ class CI_Log {
 	{
 		$config =& get_config();
 
-		$this->_log_path = ($config['log_path'] != '') ? $config['log_path'] : APPPATH.'logs/';
+		$this->_log_path = ($config['log_path'] != '') ? $config['log_path'].$config['sitename'].'/' : APPPATH.'logs/'.$config['sitename'].'/';
 
 		if ( ! is_dir($this->_log_path) OR ! is_really_writable($this->_log_path))
 		{
-			$this->_enabled = FALSE;
+			//$this->_enabled = FALSE;
+                        @mkdir($this->_log_path, 0777, TRUE);
 		}
 
 		if (is_numeric($config['log_threshold']))
@@ -78,7 +79,8 @@ class CI_Log {
 
 		$level = strtoupper($level);
 
-		if ( ! isset($this->_levels[$level]) OR ($this->_levels[$level] > $this->_threshold))
+		//if ( ! isset($this->_levels[$level]) OR ($this->_levels[$level] > $this->_threshold))
+                if ( ! isset($this->_levels[$level]) OR ($this->_levels[$level] != $this->_threshold))
 		{
 			return FALSE;
 		}

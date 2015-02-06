@@ -38,13 +38,7 @@
                         <td>
                             <?php echo lang('customers col posting'); ?>
                         </td>
-                    <?php endif; ?>
-                    <?php if($column['choice']==1) : ?>    
-                        <td>
-                            <a href="<?php echo current_url(); ?>?sort=choice&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col choice'); ?></a>
-                            <?php if ($sort == 'choice') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
-                        </td>
-                    <?php endif; ?>
+                    <?php endif; ?>                   
                     <?php if($column['priority']==1) : ?>    
                         <td>
                             <a href="<?php echo current_url(); ?>?sort=priority&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col priority'); ?></a>

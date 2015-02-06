@@ -33,13 +33,46 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo base_url(); ?>"><?php echo $this->settings->site_name; ?></a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>">
+                    <?php 
+                        $img = './images/logo/logo-master';
+                        $logo = '';
+                        if(file_exists($img.'.gif')){
+                            $logo =  base_url().$img.'.gif'; 
+                        }else if(file_exists($img.'.png')){
+                            $logo =  base_url().$img.'.png'; 
+                        }else if(file_exists($img.'.jpg')){
+                            $logo =  base_url().$img.'.jpg'; 
+                        }else if(file_exists($img.'.jpeg')){
+                            $logo =  base_url().$img.'.jpeg'; 
+                        }
+                    ?>
+                    <img src="<?php echo $logo;?>" alt="logo" />
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <?php // Nav bar left ?>
                 <?php echo $this->admin_nav; ?>
                 <?php // Nav bar right ?>
                 <ul class="nav navbar-nav navbar-right">
+                    <?php if($this->config->item('master_sitename')!=$this->config->item('sitename')) : ?>
+                        <?php 
+                            $img = './images/logo/logo-'.$this->config->item('sitename');
+                            $logo = '';
+                            if(file_exists($img.'.gif')){
+                                $logo =  base_url().$img.'.gif'; 
+                            }else if(file_exists($img.'.png')){
+                                $logo =  base_url().$img.'.png'; 
+                            }else if(file_exists($img.'.jpg')){
+                                $logo =  base_url().$img.'.jpg'; 
+                            }else if(file_exists($img.'.jpeg')){
+                                $logo =  base_url().$img.'.jpeg'; 
+                            }
+                            if(!empty($logo)){
+                                echo '<li class="logo"><img src="'.$logo.'" alt="logo" /></li>';
+                            }
+                        ?>
+                    <?php endif; ?>
                     <li><a data-toggle="modal" data-target="#myEdit" href="<?php echo base_url('admin/users/edit/'); ?>">
                         <?php 
                              $user = $this->session->userdata('logged_in');

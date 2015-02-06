@@ -112,3 +112,7 @@ select#choice,select#priority {width: 235px;}
 .modal-body #users_form_edit .input-group input {width: 191px !important;}
 
 .modal-body #customers_column_form .form-group {clear: both;}
+
+.navbar>.container .navbar-brand {margin-left: 0px;!important;}
+.navbar-brand{padding: 4px 15px !important;}
+.navbar-right .logo{padding: 4px 15px !important;}

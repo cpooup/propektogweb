@@ -181,7 +181,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 3;
 
 /*
 |--------------------------------------------------------------------------
@@ -374,6 +374,6 @@ $config['modules_locations'] = array(
 /* End of file config.php */
 /* Location: ./application/config/config.php */
 
-
+// Master site setting 
 $config['master_sitename'] = 'propektogweb';
 $config['sitename'] = array_shift((explode(".",$_SERVER['HTTP_HOST'])));

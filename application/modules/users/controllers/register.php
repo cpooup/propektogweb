@@ -29,11 +29,11 @@ class Register extends Public_Controller {
 	{
         // validators
         $this->form_validation->set_error_delimiters($this->config->item('error_delimeter_left'), $this->config->item('error_delimeter_right'));
-        $this->form_validation->set_rules('username', lang('admin input username'), 'required|trim|xss_clean|min_length[5]|max_length[30]|callback__check_username');
+        $this->form_validation->set_rules('username', lang('admin input username'), 'required|trim|xss_clean|callback__check_username');
         $this->form_validation->set_rules('first_name', lang('users input first_name'), 'required|trim|xss_clean|min_length[2]|max_length[32]');
         $this->form_validation->set_rules('last_name', lang('users input last_name'), 'required|trim|xss_clean|min_length[2]|max_length[32]');
         $this->form_validation->set_rules('email', lang('users input email'), 'required|trim|xss_clean|max_length[128]|valid_email|callback__check_email');
-        $this->form_validation->set_rules('password', lang('users input password'), 'required|trim|xss_clean|min_length[5]');
+        $this->form_validation->set_rules('password', lang('users input password'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('password_repeat', lang('users input password_repeat'), 'required|trim|xss_clean|matches[password]');
 
         if ($this->form_validation->run($this) == TRUE)

@@ -249,7 +249,9 @@ class Admin extends Admin_Controller {
         foreach ($columns['results'] as $column){
             $filters_columns[$column['name']] = $column['status'];
         }
+        
 
+                   
         // set content data
         $content_data = array(
             'this_url'   => THIS_URL,
@@ -538,20 +540,20 @@ class Admin extends Admin_Controller {
                 $users['results'][$key][lang('export col data_entry')] = lang('export data_entry_monday'.$user['data_entry_monday']).lang('export data_entry_tuesday'.$user['data_entry_tuesday']).lang('export data_entry_wednesday'.$user['data_entry_wednesday']).lang('export data_entry_thursday'.$user['data_entry_thursday']).lang('export data_entry_friday'.$user['data_entry_friday']);
                 $users['results'][$key][lang('export col posting')] = lang('export posting_monday'.$user['posting_monday']).lang('export posting_tuesday'.$user['posting_tuesday']).lang('export posting_wednesday'.$user['posting_wednesday']).lang('export posting_thursday'.$user['posting_thursday']).lang('export posting_friday'.$user['posting_friday']);
                 $users['results'][$key][lang('export col approveby')] =  $user['approveby'];
-                $users['results'][$key][lang('export col alternativ')] = ($user['choice']?lang('customers select alternativ'.$user['choice']):'');
                 $users['results'][$key][lang('export col priority')] = ($user['priority'] > 0?lang('customers select priority yes'):lang('customers select priority no'));
                 $users['results'][$key][lang('export col updated')] =  $user['updated'];
                 $users['results'][$key][lang('export col updateby')] =  $user['username'];
-                if ($user['deleted'] == 0){
-                    $users['results'][$key]['Status'] = lang('admin input inactive');
-                }else{
-                    $users['results'][$key]['Status'] = lang('admin input active');
+                if($this->config->item('master_sitename')==$this->config->item('sitename')){
+                    if ($user['deleted'] == 0){
+                        $users['results'][$key]['Status'] = lang('admin input active');
+                    }else{
+                        $users['results'][$key]['Status'] = lang('admin input inactive');
+                    }
                 }
                 
                 //Fix column in array
                 unset($users['results'][$key]['name']);
                 unset($users['results'][$key]['email']);
-                unset($users['results'][$key]['choice']);
                 unset($users['results'][$key]['priority']);
                 unset($users['results'][$key]['comment']);
                 unset($users['results'][$key]['approveby']);

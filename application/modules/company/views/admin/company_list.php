@@ -7,14 +7,51 @@
                         <a href="<?php echo current_url(); ?>?sort=sitename&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('users col sitename'); ?></a>
                         <?php if ($sort == 'sitename') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
+                    <td>
+                        <?php echo lang('log'); ?>
+                    </td>
+                    <td>
+                        <?php echo lang('users title Logo'); ?>
+                    </td>
                 </tr>
             </thead>
             <tbody>
                 <?php if ($total) : ?>
                     <?php foreach ($company as $value) : ?>
                         <tr>
-                            <td<?php echo (($sort == 'sitename') ? ' class="sorted"' : ''); ?>>
+                            <td>
                                     <?php echo $value['sitename']; ?>
+                            </td>
+                            <td>
+                                <a href="<?php echo $this_url.'/log/'.$value['sitename']; ?>"><?php echo lang('view'); ?></a>
+                            </td>
+                            <td>
+                                    <?php 
+                                    if($this->config->item('master_sitename')==$value['sitename']){
+                                        $img = './images/logo/logo-master';
+                                    }else{
+                                        $img = './images/logo/logo-'.$value['sitename'];
+                                    }
+                                    
+                                    $logo = '';
+                                    if(file_exists($img.'.gif')){
+                                        $logo =  base_url().$img.'.gif'; 
+                                    }else if(file_exists($img.'.png')){
+                                        $logo =  base_url().$img.'.png'; 
+                                    }else if(file_exists($img.'.jpg')){
+                                        $logo =  base_url().$img.'.jpg'; 
+                                    }else if(file_exists($img.'.jpeg')){
+                                        $logo =  base_url().$img.'.jpeg'; 
+                                    }
+                                    if(!empty($logo)){
+                                        echo '<img src="'.$logo.'" alt="logo" />';
+                                    }
+                                    ?>
+                            </td>
+                            <td>
+                                <div class="btn-group pull-right">
+                                    <a href="<?php echo $this_url; ?>/edit/<?php echo $value['id']; ?>" data-toggle="modal" data-target="#modal-edit-<?php echo $value['id']; ?>" class="btn btn-warning" title="<?php echo lang('admin button edit'); ?>"><span class="glyphicon glyphicon-pencil"></span></a>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -54,3 +91,9 @@
         <?php endif; ?>
     </div>-->
 </div>
+
+<?php if ($total) : ?>
+    <?php foreach ($company as $value) : ?>
+        <div class="modal fade" id="modal-edit-<?php echo $value['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="modal-label-<?php echo $value['id']; ?>" aria-hidden="true"></div> 
+    <?php endforeach; ?>
+<?php endif; ?>

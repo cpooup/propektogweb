@@ -14,7 +14,7 @@ class Admin extends Admin_Controller {
     function __construct()
     {
         parent::__construct();
-
+        $this->load->helper('directory');
         // load the language files
         $this->lang->load('company');
 
@@ -173,9 +173,9 @@ class Admin extends Admin_Controller {
 
         // set content data
         $content_data = array(
+            'method'        => 'add',
             'cancel_url'        => $this->_redirect_url,
-            'title'              => lang("users button add_new_user"),
-            'password_required' => TRUE
+            'title'              => lang("users button add_new_user")
         );
 
         // load views
@@ -185,7 +185,195 @@ class Admin extends Admin_Controller {
         //$this->load->view('admin_template', $data);
     }
 
+    /**
+     * Edit existing company logo
+     *
+     * @param int $id
+     */
+    public function edit($id=NULL)
+    {
+        // make sure we have a numeric id
+        if (is_null($id) || ! is_numeric($id))
+            redirect($this->_redirect_url);
 
+        // get the data
+        $company = $this->company_model->get_company($id);
+
+        // if empty results, return to list
+        if ( ! $company)
+            redirect($this->_redirect_url);
+
+        if($this->input->post()){
+                $config['upload_path'] = './images/logo/';
+		$config['allowed_types'] = 'gif|jpg|jpeg|png';
+		$config['max_size']	= '100';
+		$config['max_width']  = '150';
+		$config['max_height']  = '50';
+                $config['overwrite']  = TRUE;
+                if($this->config->item('master_sitename')== $this->input->post('sitename')){
+                    $config['file_name']  = 'logo-master';
+                }else{
+                    $config['file_name']  = 'logo-'.$this->input->post('sitename');
+                }
+		$this->load->library('upload', $config);
+
+		if ($this->upload->do_upload('logo'))
+		{
+                    $data = array('upload_data' => $this->upload->data());
+                            $img =  $config['upload_path'].$config['file_name'];
+                            $logo = '';
+                            if(file_exists($img.'.gif') && $data['upload_data']['file_ext'] != '.gif'){
+                                @unlink($img.'.gif');
+                            }else if(file_exists($img.'.png') && $data['upload_data']['file_ext'] != '.png'){
+                                @unlink($img.'.png');
+                            }else if(file_exists($img.'.jpg') && $data['upload_data']['file_ext'] != '.jpg'){
+                                @unlink($img.'.jpg');
+                            }else if(file_exists($img.'jpeg') && $data['upload_data']['file_ext'] != '.jpeg'){
+                                @unlink($img.'.jpeg'); 
+                            }
+			$this->session->set_flashdata('message', sprintf(lang('users msg edit_logo_success')));
+		}
+		else
+		{        $error = array('error' => $this->upload->display_errors());
+			 $this->session->set_flashdata('error', $error['error']);
+		}
+                
+                // return to list and display message
+                redirect($this->_redirect_url);
+        }
+        // setup page header data
+        $this->header_data = array_merge_recursive($this->header_data, array(
+            'page_title'  => lang('users title user_add')
+        ));
+        $data = $this->header_data;
+
+        // set content data
+        $content_data = array(
+            'method'        => 'edit',
+            'company'       => $company,
+            'cancel_url'        => $this->_redirect_url,
+            'title'              => lang("users title edit_logo")
+        );
+
+        // load views
+        $data['content'] = $this->load->view('admin/company_form', $content_data, TRUE);
+        echo $data['content'];
+        exit();
+        //$this->load->view('admin_template', $data);
+    }
+    
+    /**
+     * Log list
+     */
+    public function log($sitename=NULL)
+    {
+        // make sure we have
+        if (is_null($sitename))
+            redirect($this->_redirect_url);
+        
+        $config =& get_config();
+        $log_path = ($config['log_path'] != '') ? $config['log_path'].$sitename.'/' : APPPATH.'logs/'.$sitename.'/';
+        $map = directory_map($log_path, FALSE, TRUE);
+        
+        if(empty($map)){
+                $this->session->set_flashdata('error','log not found.');
+                // return to list and display message
+                redirect($this->_redirect_url);
+        }
+        
+        // setup page header data
+        $this->header_data = array_merge_recursive($this->header_data, array(
+            'page_title'    => lang('users title user_list'),
+            'js_files_i18n' => array(
+                $this->jsi18n->translate("/application/modules/users/assets/js/users_admin_i18n.js")
+            )
+        ));
+        
+        $data = $this->header_data;
+        
+        // set content data
+        $content_data = array(
+            'this_url'   => THIS_URL,
+            'logs'       => $map,
+            'sitename'       => $sitename,
+            'total'       => count($map),
+            'cancel_url'        => $this->_redirect_url,
+            'title'              => lang("users title edit_logo"),
+            'filters'    => '',
+            'filter'     => '',
+            'pagination' => '',
+            'limit'      => '',
+            'offset'     => '',
+            'sort'       => '',
+            'dir'        => ''
+        );
+        
+        // load views
+        $data['content'] = $this->load->view('admin/company_log', $content_data, TRUE);
+        $this->load->view('admin_template', $data);
+    }
+    
+    /**
+     * Log View
+     */
+    public function log_view($data=NULL)
+    {
+        // make sure we have
+        if (is_null($data))
+            redirect($this->_redirect_url);
+        
+        list($sitename,$logname) = explode('%7C',$data);
+        $config =& get_config();
+        $log_path = ($config['log_path'] != '') ? $config['log_path'].$sitename.'/'.$logname.'.php' : APPPATH.'logs/'.$sitename.'/'.$logname.'.php';
+        if (file_exists($log_path))
+        {
+            $convert_data =  array_values( array_filter(@array_filter($this->splitNewLine(@file_get_contents($log_path)))));
+            unset($convert_data[0]);
+        }else{
+                $this->session->set_flashdata('error','log not found.');
+                // return to list and display message
+                redirect($this->_redirect_url);
+        }
+        
+        
+        // setup page header data
+        $this->header_data = array_merge_recursive($this->header_data, array(
+            'page_title'    => lang('users title user_list'),
+            'js_files_i18n' => array(
+                $this->jsi18n->translate("/application/modules/users/assets/js/users_admin_i18n.js")
+            )
+        ));
+        
+        $data = $this->header_data;
+        
+        // set content data
+        $content_data = array(
+            'this_url'   => THIS_URL,
+            'logs'       => $convert_data,
+            'sitename'       => $sitename,
+            'total'       => count($convert_data),
+            'cancel_url'        => $this->_redirect_url,
+            'title'              => lang("users title edit_logo"),
+            'filters'    => '',
+            'filter'     => '',
+            'pagination' => '',
+            'limit'      => '',
+            'offset'     => '',
+            'sort'       => '',
+            'dir'        => ''
+        );
+        
+        // load views
+        $data['content'] = $this->load->view('admin/company_log_view', $content_data, TRUE);
+        $this->load->view('admin_template', $data);
+    }
+    
+    public function splitNewLine($text) {
+        $code=preg_replace('/\n$/','',preg_replace('/^\n/','',preg_replace('/[\r\n]+/',"\n",$text)));
+        return explode("\n",$code);
+    }
+    
+    //check company name
     public function company_availability()
     {
         if ($this->input->post('sitename')){

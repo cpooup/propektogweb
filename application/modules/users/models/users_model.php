@@ -85,6 +85,32 @@ class Users_model extends CI_Model {
         return $results;
     }
 
+    function get_all_user_by_company($site_id)
+    {
+         $user = $this->session->userdata('logged_in');
+         $sql = "
+                SELECT SQL_CALC_FOUND_ROWS u.*,s.sitename,uu.username as createby
+                FROM {$this->_db} as u
+                LEFT JOIN sitename as s ON s.id = u.site_id
+                LEFT JOIN users as uu ON uu.id = u.updateby
+                WHERE u.deleted = '0'
+                AND u.site_id =".$site_id."
+            ";
+
+       
+        $query = $this->db->query($sql);
+
+        if ($query->num_rows() > 0)
+            $results['results'] = $query->result_array();
+        else
+            $results['results'] = NULL;
+
+        $sql = "SELECT FOUND_ROWS() AS total";
+        $query = $this->db->query($sql);
+        $results['total'] = $query->row()->total;
+
+        return $results;
+    }
     
     /**
      * Get specific user
@@ -98,16 +124,18 @@ class Users_model extends CI_Model {
             return FALSE;
         if($this->config->item('master_sitename')==$this->config->item('sitename')){
             $sql = "
-                SELECT *
-                FROM {$this->_db}
-                WHERE id = " . $this->db->escape($id) . "
+                SELECT u.*,s.sitename
+                FROM {$this->_db} as u
+                LEFT JOIN sitename as s ON s.id = u.site_id
+                WHERE u.id = " . $this->db->escape($id) . "
             ";
         }else{
             $sql = "
-                SELECT *
-                FROM {$this->_db}
-                WHERE id = " . $this->db->escape($id) . "
-                    AND deleted = '0'
+                SELECT u.*,s.sitename
+                FROM {$this->_db} as u
+                LEFT JOIN sitename as s ON s.id = u.site_id
+                WHERE u.id = " . $this->db->escape($id) . "
+                    AND u.deleted = '0'
             ";
         }
    
@@ -154,10 +182,12 @@ class Users_model extends CI_Model {
 
         $this->db->query($sql);
 
-        if ($id = $this->db->insert_id())
+        if ($id = $this->db->insert_id()){
+            log_message('info', sprintf(lang('log add_user'), $user['username'],$data['username'],$this->config->item('sitename')));
             return $id;
-        else
+        }else{
             return FALSE;
+        }
     }
 
     // Get sitename id
@@ -187,7 +217,7 @@ class Users_model extends CI_Model {
             UPDATE {$this->_db}
             SET
         ";
-
+        $data_user = $this->get_user($id);    
         if ($data['password'] != '')
         {
             // secure password
@@ -210,10 +240,12 @@ class Users_model extends CI_Model {
 
         $this->db->query($sql);
         
-        if ($this->db->affected_rows())
+        if ($this->db->affected_rows()){
+            log_message('info', sprintf(lang('log edit_customer'), $user['username'],$data_user['username'],$this->config->item('sitename')));
             return TRUE;
-        else
-            return FALSE;        
+        }else{
+            return FALSE;
+        }
     }
 
     /**
@@ -227,6 +259,13 @@ class Users_model extends CI_Model {
         if (is_null($id))
             return FALSE;
         $user = $this->session->userdata('logged_in');
+        $user_data = $this->get_user($id); 
+        
+        $user_count = $this->get_all_user_by_company($user_data['site_id']);
+        
+        if($user_count['total'] < 2)
+            return FALSE;    
+        
         $sql = "
             UPDATE {$this->_db}
             SET
@@ -234,15 +273,17 @@ class Users_model extends CI_Model {
                 updated = '" . date('Y-m-d H:i:s') . "',
                 updateby = " . $this->db->escape($user['id']) . "
             WHERE id = " . $this->db->escape($id) . "
-                AND id > 1
+                AND id > 1 AND site_id = ".$data_user['site_id']."
         ";
 
         $this->db->query($sql);
         
-        if ($this->db->affected_rows())
+        if ($this->db->affected_rows()){
+            log_message('info', sprintf(lang('log delete_user'), $user['username'],$user_data['username'],$this->config->item('sitename')));
             return TRUE;
-        else
+        }else{
             return FALSE;
+        }
     }
 
     
@@ -256,15 +297,20 @@ class Users_model extends CI_Model {
     {
         if (is_null($id))
             return FALSE;
-        
-        $this->db->query("DELETE FROM {$this->_db} WHERE id = ".$this->db->escape($id));
-        
+        $user_data = $this->get_user($id);
+        $user_count = $this->get_all_user_by_company($user_data['site_id']);
+        if($user_count['total'] < 2)
+            return FALSE;    
+            
+        $this->db->query("DELETE FROM {$this->_db} WHERE id = ".$this->db->escape($id)." AND id > 1 AND site_id=".$user_data['site_id']);
+        $user_login = $this->session->userdata('logged_in');
         $user = $this->get_user($id);
-        
-        if (!$user)
+        if (!$user){
+            log_message('info', sprintf(lang('log master_delete_user'), $user_login['username'],$user_data['username'],$user_data['sitename'],$this->config->item('sitename')));
             return TRUE;
-        else
+        }else{
             return FALSE;
+        }
     }
 
     /**

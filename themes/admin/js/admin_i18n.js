@@ -137,8 +137,6 @@ BBApp.prototype.onUserAdd = function() {
             rules: {
                     username: {
                         required: true,
-                        minlength: 5,
-                        maxlength: 30,
                         remote: {
                             url: config.baseURL+"users/user_availability/",
                             type: "post",
@@ -157,28 +155,22 @@ BBApp.prototype.onUserAdd = function() {
                         }   
                     },
                     password: {
-                        required: true,
-                        minlength: 5
+                        required: true
                     },
                     password_repeat: {
-                        minlength: 5,
                         equalTo: "input[name='password']"
                     }
             },
             messages: {
                     username: {
                         required: "Please enter username",
-                        minlength: "Please enter username [min length is 5]",
-                        maxlength: "Please enter username [max length is 30]",
                         remote: "The username already exists!"
                     },
                     password: {
-                        required: "Please enter password",
-                        minlength: "Please enter password [min length is 5]"
+                        required: "Please enter password"
                     },
                     password_repeat: {
-                        equalTo: "Enter enter Confirm Password Same as Password",
-                        minlength: "Please enter password [min length is 5]"
+                        equalTo: "Enter enter Confirm Password Same as Password"
                     }
             },
             submitHandler: function(form) {
@@ -196,7 +188,6 @@ BBApp.prototype.onUserEdit= function() {
             rules: {
                     password_current: {
                         required: true,
-                        minlength: 5,
                         remote: {
                             url: config.baseURL+"users/user_password_current/",
                             type: "post",
@@ -215,27 +206,22 @@ BBApp.prototype.onUserEdit= function() {
                         }   
                     },
                     password: {
-                        required: true,
-                        minlength: 5
+                        required: true
                     },
                     password_repeat: {
-                        minlength: 5,
                         equalTo: "input[name='password']"
                     }
             },
             messages: {
                     password_current: {
                         required: "Please enter password",
-                        minlength: "Please enter password [min length is 5]",
                         remote: "Password do not match"
                     },
                     password: {
-                        required: "Please enter password",
-                        minlength: "Please enter password [min length is 5]"
+                        required: "Please enter password"
                     },
                     password_repeat: {
-                        equalTo: "Enter enter Confirm Password Same as Password",
-                        minlength: "Please enter password [min length is 5]"
+                        equalTo: "Enter enter Confirm Password Same as Password"
                     }
             },
             submitHandler: function(form) {

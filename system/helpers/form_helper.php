@@ -94,7 +94,7 @@ if ( ! function_exists('form_open'))
  */
 if ( ! function_exists('form_open_multipart'))
 {
-	function form_open_multipart($action = '', $attributes = array(), $hidden = array())
+	function form_open_multipart($name='admin',$action = '', $attributes = array(), $hidden = array())
 	{
 		if (is_string($attributes))
 		{
@@ -105,7 +105,7 @@ if ( ! function_exists('form_open_multipart'))
 			$attributes['enctype'] = 'multipart/form-data';
 		}
 
-		return form_open($action, $attributes, $hidden);
+		return form_open($name,$action, $attributes, $hidden);
 	}
 }
 

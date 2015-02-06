@@ -122,14 +122,14 @@ class Company_model extends CI_Model {
             INSERT INTO {$this->_db} (
                 sitename
             ) VALUES (
-                " . $this->db->escape($data['sitename']) . "
+                " . $this->db->escape(strtolower($data['sitename'])) . "
             )
         ";
 
         $this->db->query($sql);
         
         if ($id = $this->db->insert_id()){
-            
+            log_message('info', sprintf(lang('log add_company'), $user['username'],$data['sitename']));
             //Add user for company
             // secure password
             $salt     = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), TRUE));
@@ -162,7 +162,6 @@ class Company_model extends CI_Model {
                     ('email', '1', ".$id.", 4),
                     ('data_entry', '1', ".$id.", 5),
                     ('posting', '1', ".$id.", 6),
-                    ('choice', '0', ".$id.", 7),
                     ('priority', '0', ".$id.", 8),
                     ('comment', '0', ".$id.", 9),
                     ('approveby', '0', ".$id.", 10),

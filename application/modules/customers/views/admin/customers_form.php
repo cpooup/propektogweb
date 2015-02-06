@@ -67,12 +67,6 @@
                         <?php echo lang('customers msg select at least one day');?>
                     </div>
                 </div>
-                <div class="form-group has-feedback <?php echo (form_error('choice')) ? 'has-error': ''; ?>">
-                    <div class="input-group">
-                      <?php echo form_span(lang('customers input alternativ'), 'alternativ', array('class'=>'input-group-addon')); ?>
-                      <?php echo form_dropdown('choice', array(""=>lang("customers select alternativ"),"1"=>lang("customers select alternativ1"),"2"=>lang("customers select alternativ2"),"3"=>lang("customers select alternativ3")), (isset($user['choice']) ? $user['choice'] : ''), 'id="choice" class="form-control"'); ?>
-                    </div>
-                </div>
                 <div class="form-group has-feedback <?php echo (form_error('priority')) ? 'has-error': ''; ?>">
                     <div class="input-group">
                       <?php echo form_span(lang('customers input priority'), 'priority', array('class'=>'input-group-addon')); ?>

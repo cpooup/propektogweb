@@ -93,3 +93,10 @@ $lang['users error user_not_exist']           = "That user does not exist!";
 $lang['users error username_exists']          = "The username <strong>%s</strong> already exists!";
 $lang['users error validate_failed']          = "There was a problem validating your account. Please try again.";
 $lang['password error not match']             = "Password do not match.";
+
+
+//Log file
+$lang['log add_user']                 = "'%s' was add user '%s' on '%s' site";
+$lang['log edit_user']                 = "'%s' was edit user '%s' on '%s' site";
+$lang['log delete_user']                 = "'%s' was delete user '%s' on '%s' site";
+$lang['log master_delete_user']                 = "'%s' was delete user '%s' from '%s' site on '%s' site";

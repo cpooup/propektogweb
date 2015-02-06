@@ -46,7 +46,6 @@ $lang['customers col posting']                  = "Posting";
 $lang['customers col sitename']                  = "Company";
 $lang['customers col created']                  = "Create Date";
 $lang['customers col deleted']                  = "Status";
-$lang['customers col choice']                  = "Oppgaver";
 $lang['customers col priority']                = "Prioritet";
 
 // Result Data Entry Day
@@ -183,3 +182,11 @@ $lang['customers tab3']                 = "tirsdag";
 $lang['customers tab4']                 = "onsdag";
 $lang['customers tab5']                 = "torsdag";
 $lang['customers tab6']                 = "fredag";
+
+
+//Log file
+$lang['log add_customer']                 = "'%s' was add customer '%s' on '%s' site";
+$lang['log edit_customer']                 = "'%s' was edit customer '%s' on '%s' site";
+$lang['log edit_column']                 = "'%s' was edit column view on '%s' site";
+$lang['log delete_customer']                 = "'%s' was delete customer '%s' on '%s' site";
+$lang['log master_delete_customer']                 = "'%s' was delete customer '%s' from '%s' site on '%s' site";
