@@ -228,7 +228,6 @@ This is really simple:
 * Create a new database and import the included sql file
     + default mastersite username/password is admin/admin
 * Modify the application/config/config.php
-    + line 227: set your encryption key
     + line 378: set your mastersite domain name
 * Modify application/config/database.php and connect to your database
 * Upload all files to your server
