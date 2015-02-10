@@ -152,6 +152,22 @@ You can see this being used in the auth module login controller. For more about 
 blog (http://www.mahbubblog.com/php/form-validation-callbacks-in-hmvc-in-codeigniter/).
 
 
+##CUSTOMER MANAGEMENT
+
+It does use a database table called
+'customers'. This tool demonstrates a lot of basic but important functionality:
+
+* Columns View
+* Tabs
+* Sortable list columns
+* Pagination with customer-changeable items/page
+* Exporting lists to CSV
+* Form validation
+* Harnessing the power of Bootstrap to accelerate development
+
+![User Administration](http://puu.sh/fIxVH/60b1672d88.png)
+
+
 ##USER MANAGEMENT
 
 It does use a database table called
@@ -159,15 +175,23 @@ It does use a database table called
 
 * Sortable list columns
 * Pagination with user-changeable items/page
-* Exporting lists to CSV
 * Form validation
 * Harnessing the power of Bootstrap to accelerate development
 
-![User Administration](http://s12.postimg.org/5oc54gnnx/Screen_Shot_2013_10_08_at_2_21_23_PM.png?raw=true)
+![User Administration](http://puu.sh/fIB3n/3ab94e4095.png)
 
-Please note: user 1 is the main administrator - DO NOT MANUALLY DELETE. You can not delete this user from within the
-admin tool.
 
+##COMPANY MANAGEMENT
+
+It does use a database table called
+'sitename'. This tool demonstrates a lot of basic but important functionality:
+
+* Sortable list columns
+* Pagination with user-changeable items/page
+* Form validation
+* Harnessing the power of Bootstrap to accelerate development
+
+![User Administration](http://puu.sh/fIBud/d842fd5608.png)
 
 
 ##THEMES
@@ -201,16 +225,11 @@ so if you need a more robust solution, such as authentication and API keys, chec
 This is really simple:
 
 * Create a new database and import the included sql file
-    + default administrator username/password is admin/admin
+    + default mastersite username/password is admin/admin
 * Modify the application/config/config.php
-    + line 183: set your log threshold - I usually set it to 1 for production environments
     + line 227: set your encryption key
-* Modify the application/config/core.php
-    + set your site name
+    + line 378: set your mastersite domain name
 * Modify application/config/database.php and connect to your database
 * Upload all files to your server
-* Make sure the /captcha/ folder has write permission
-* Visit your new URL
-    + The default welcome page includes links to the admin tool and the private user profile page
 * Make sure you log in to admin and change the administrator password!
 
