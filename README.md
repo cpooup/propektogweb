@@ -21,7 +21,7 @@ NOTE: This documentation assumes you are already familiar with PHP and CodeIgnit
 CodeIgniter, visit the user guide at http://ellislab.com/codeigniter/user-guide/. To learn more about PHP, visit
 http://php.net/.
 
-![Welcome Screen](http://puu.sh/fIxVH/60b1672d88.png)
+![Welcome Screen](http://puu.sh/fID7v/7c8440e67a.png)
 
 ##MODULAR
 
@@ -165,7 +165,7 @@ It does use a database table called
 * Form validation
 * Harnessing the power of Bootstrap to accelerate development
 
-![User Administration](http://puu.sh/fIxVH/60b1672d88.png)
+![User Administration](http://puu.sh/fID7v/7c8440e67a.png)
 
 
 ##USER MANAGEMENT
@@ -223,7 +223,8 @@ so if you need a more robust solution, such as authentication and API keys, chec
 ##INSTALLATION
 
 This is really simple:
-
+* Modify the sql/default.sql
+    + line 233: set your mastersite domain name
 * Create a new database and import the included sql file
     + default mastersite username/password is admin/admin
 * Modify the application/config/config.php
