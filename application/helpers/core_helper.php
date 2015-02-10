@@ -116,10 +116,11 @@ if ( ! function_exists('array_to_csv'))
                 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . "GMT");
                 header("Cache-Control: no-cache, must-revalidate");
                 header("Pragma: no-cache");
-                header("Content-type: text/csv");
+                header('Content-Encoding: UTF-8');
+                header("Content-type: text/csv; charset=utf-8");
                 header("Content-Description: File Transfer");
                 header("Content-Disposition: attachment; filename={$filename}");
-
+                
                 $output = @fopen('php://output', 'w');
 
                 // used to determine header row
@@ -136,8 +137,8 @@ if ( ! function_exists('array_to_csv'))
                     // clean the data
                     $allowed = '/[^a-zA-Z0-9_ %\|\[\]\.\(\)%&-]/s';
                     foreach ($row as $key=>$value)
-                        $row[$key] = preg_replace($allowed, '', $value);
-
+                        //$row[$key] = preg_replace($allowed, '', $value);
+                        $row[$key] = $value;
                     // insert the data
                     fputcsv($output, $row);
                 }

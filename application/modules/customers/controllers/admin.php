@@ -469,6 +469,7 @@ class Admin extends Admin_Controller {
      */
     function export()
     {
+        header('Content-Type: text/html; charset=utf-8');
         // get parameters
         $sort = $this->input->get('sort') ? $this->input->get('sort', TRUE) : DEFAULT_SORT;
         $dir  = $this->input->get('dir')  ? $this->input->get('dir', TRUE)  : DEFAULT_DIR;
@@ -579,7 +580,7 @@ class Admin extends Admin_Controller {
                 unset($users['results'][$key]['sitename']);
                 unset($users['results'][$key]['site_id']);
             }
-            
+
             // export the file
             array_to_csv($users['results'], "customers");
         }

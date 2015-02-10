@@ -129,11 +129,6 @@
                                     ?>
                                 </td>
                             <?php endif; ?>
-                            <?php if($column['choice']==1) : ?>
-                                <td<?php echo (($sort == 'choice') ? ' class="sorted"' : ''); ?>>
-                                    <?php echo lang('customers select alternativ'.$user['choice']); ?>
-                                </td>
-                            <?php endif; ?>
                             <?php if($column['priority']==1) : ?> 
                                 <td<?php echo (($sort == 'priority') ? ' class="sorted"' : ''); ?>>
                                     <?php echo lang('customers select priority'.$user['priority']); ?>
