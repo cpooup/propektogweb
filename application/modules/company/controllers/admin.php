@@ -156,11 +156,45 @@ class Admin extends Admin_Controller {
             // save the new user
             $saved = $this->company_model->add_company($this->input->post());
 
-            if ($saved)
-                $this->session->set_flashdata('message', sprintf(lang('users msg add_user_success'), $this->input->post('sitename')));
-            else
-                $this->session->set_flashdata('error', sprintf(lang('users error add_user_failed'), $this->input->post('sitename')));
+            if ($saved){
+                $config['upload_path'] = './images/logo/';
+		$config['allowed_types'] = 'gif|jpg|jpeg|png';
+		$config['max_size']	= '100';
+		$config['max_width']  = '150';
+		$config['max_height']  = '50';
+                $config['overwrite']  = TRUE;
+                if($this->config->item('master_sitename')== $this->input->post('sitename')){
+                    $config['file_name']  = 'logo-master';
+                }else{
+                    $config['file_name']  = 'logo-'.$this->input->post('sitename');
+                }
+		$this->load->library('upload', $config);
 
+		if ($this->upload->do_upload('logo'))
+		{
+                    $data = array('upload_data' => $this->upload->data());
+                            $img =  $config['upload_path'].$config['file_name'];
+                            $logo = '';
+                            if(file_exists($img.'.gif') && $data['upload_data']['file_ext'] != '.gif'){
+                                @unlink($img.'.gif');
+                            }else if(file_exists($img.'.png') && $data['upload_data']['file_ext'] != '.png'){
+                                @unlink($img.'.png');
+                            }else if(file_exists($img.'.jpg') && $data['upload_data']['file_ext'] != '.jpg'){
+                                @unlink($img.'.jpg');
+                            }else if(file_exists($img.'jpeg') && $data['upload_data']['file_ext'] != '.jpeg'){
+                                @unlink($img.'.jpeg'); 
+                            }
+			$this->session->set_flashdata('message', sprintf(lang('users msg edit_logo_success')));
+		}
+		else
+		{        $error = array('error' => $this->upload->display_errors());
+			 $this->session->set_flashdata('error', $error['error']);
+		}
+                
+                $this->session->set_flashdata('message', sprintf(lang('users msg add_user_success'), $this->input->post('sitename')));
+            }else{
+                $this->session->set_flashdata('error', sprintf(lang('users error add_user_failed'), $this->input->post('sitename')));
+            }
             // return to list and display message
             redirect($this->_redirect_url);
         }
@@ -198,7 +232,8 @@ class Admin extends Admin_Controller {
 
         // get the data
         $company = $this->company_model->get_company($id);
-
+        $id = $company['id'];
+        
         // if empty results, return to list
         if ( ! $company)
             redirect($this->_redirect_url);
@@ -238,6 +273,14 @@ class Admin extends Admin_Controller {
 			 $this->session->set_flashdata('error', $error['error']);
 		}
                 
+                 // save the changes
+                $saved = $this->company_model->edit_company($this->input->post());
+
+                if ($saved)
+                    $this->session->set_flashdata('message', sprintf(lang('users msg edit_logo_success'), $this->input->post('sitename_name')));
+                else
+                    $this->session->set_flashdata('error', sprintf(lang('users error edit_user_failed'), $this->input->post('sitename_name')));
+
                 // return to list and display message
                 redirect($this->_redirect_url);
         }
@@ -251,6 +294,7 @@ class Admin extends Admin_Controller {
         $content_data = array(
             'method'        => 'edit',
             'company'       => $company,
+            'company_id'           => $id,
             'cancel_url'        => $this->_redirect_url,
             'title'              => lang("users title edit_logo")
         );
@@ -322,7 +366,7 @@ class Admin extends Admin_Controller {
         if (is_null($data))
             redirect($this->_redirect_url);
         
-        list($sitename,$logname) = explode('%7C',$data);
+        list($sitename,$logname) = explode('_',$data);
         $config =& get_config();
         $log_path = ($config['log_path'] != '') ? $config['log_path'].$sitename.'/'.$logname.'.php' : APPPATH.'logs/'.$sitename.'/'.$logname.'.php';
         if (file_exists($log_path))

@@ -72,7 +72,7 @@ class Core_model extends CI_Model {
                 if($this->config->item('master_sitename')==$this->config->item('sitename')){   
                     $menu .= '<li class="' . ((is_array($submenu)) ? 'dropdown' : '') . $active . '">';
                     $menu .= '<a href="' . base_url($row['url']) . '"' . ((is_array($submenu)) ? ' class="dropdown-toggle" data-toggle="dropdown"' : '') . '>';
-                    $menu .= $row['title'] . ((is_array($submenu)) ? ' <b class="caret"></b>' : '') . '</a>';
+                    $menu .= lang('admin label '.$row['title']) . ((is_array($submenu)) ? ' <b class="caret"></b>' : '') . '</a>';
 
                     if (is_array($submenu))
                     {

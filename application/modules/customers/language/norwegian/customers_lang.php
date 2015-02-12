@@ -34,19 +34,19 @@ $lang['customers link register_account']          = "Register for an account.";
 
 // Table Columns New
 $lang['customers col id']                     = 'ID';
-$lang['customers col name']                     = 'Kundenavn';
-$lang['customers col email']                    = "Mailadresse";
+$lang['customers col name']                     = 'Selskap';
+$lang['customers col email']                    = "Email";
 $lang['customers col day']                      = "Dag";
 $lang['customers col comment']                  = "Kommentarer";
 $lang['customers col approveby']                = "Godkjennere";
-$lang['customers col updated']                  = "Last Update";
-$lang['customers col updateby']                 = "Update by";
-$lang['customers col data_entry']               = "Data Entry";
-$lang['customers col posting']                  = "Posting";
-$lang['customers col sitename']                  = "Company";
+$lang['customers col updated']                  = "Oppdatert";
+$lang['customers col updateby']                 = "Bruker";
+$lang['customers col data_entry']               = "Prekontering";
+$lang['customers col posting']                  = "Bokføring";
+$lang['customers col sitename']                  = "Kunde";
 $lang['customers col created']                  = "Create Date";
 $lang['customers col deleted']                  = "Status";
-$lang['customers col priority']                = "Prioritet";
+$lang['customers col priority']                = "Legg til Leverandør";
 
 // Result Data Entry Day
 $lang['data_entry_monday1']                 = "mandag<br>";
@@ -76,8 +76,8 @@ $lang['6posting_friday1']                 = "fredag";
 
 
 // Form Inputs
-$lang['customers input email']                    = "Mailadresse";
-$lang['customers input name']               = "Kundenavn";
+$lang['customers input email']                    = "Email";
+$lang['customers input name']               = "Selskap";
 $lang['customers input approveby']               = "Godkjennere";
 $lang['customers input alternativ']               = "Oppgaver";
 $lang['customers select alternativ']               = "--Select Oppgaver--";
@@ -85,11 +85,11 @@ $lang['customers select alternativ1']               = "Prekontering";
 $lang['customers select alternativ2']               = "Bokføring";
 $lang['customers select alternativ3']               = "Prekontering og Bokføring";
 
-$lang['customers input priority']               = "Priority";
-$lang['customers select priority yes']               = "Yes";
-$lang['customers select priority no']               = "No";
-$lang['customers select priority1']               = "Yes";
-$lang['customers select priority0']               = "No";
+$lang['customers input priority']               = "Legg til Leverandør";
+$lang['customers select priority yes']               = "Ja";
+$lang['customers select priority no']               = "Nei";
+$lang['customers select priority1']               = "Ja";
+$lang['customers select priority0']               = "Nei";
 
 $lang['customers input first_name']               = "First Name";
 $lang['customers input is_admin']                 = "Is Admin";
@@ -148,18 +148,18 @@ $lang['customers error username_exists']          = "The username <strong>%s</st
 $lang['customers error validate_failed']          = "There was a problem validating your account. Please try again.";
 
 //Export Columns Name
-$lang['export col name']                     = 'Kundenavn';
-$lang['export col email']                    = "Mailadresse";
+$lang['export col name']                     = 'Selskap';
+$lang['export col email']                    = "Email";
 $lang['export col day']                      = "Dag";
 $lang['export col comment']                  = "Kommentarer";
 $lang['export col approveby']                = "Godkjennere";
-$lang['export col updated']                  = "Last Update";
-$lang['export col updateby']                 = "Update by";
-$lang['export col data_entry']               = "Data Entry";
-$lang['export col posting']                  = "Posting";
-$lang['export col sitename']                  = "Company";
+$lang['export col updated']                  = "Oppdatert";
+$lang['export col updateby']                 = "Bruker";
+$lang['export col data_entry']               = "Prekontering";
+$lang['export col posting']                  = "Bokføring";
+$lang['export col sitename']                  = "Kunde";
 $lang['export col alternativ']               = "Oppgaver";
-$lang['export col priority']               = "Priority";
+$lang['export col priority']               = "Legg til Leverandør";
 
 // Export Result Data Entry Day
 $lang['export data_entry_monday1']                 = "mandag \r\n";

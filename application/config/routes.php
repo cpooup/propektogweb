@@ -58,7 +58,7 @@ if ($handle)
 	{
 		if (substr($module, 0, 1) != ".")
 		{
-			if (file_exists(APPPATH . 'modules/' . $module . '/config/routes.php'))
+			if (@file_exists(APPPATH . 'modules/' . $module . '/config/routes.php'))
 				include(APPPATH . 'modules/' . $module . '/config/routes.php');
 		}
 	}

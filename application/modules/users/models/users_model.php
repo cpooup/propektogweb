@@ -173,8 +173,8 @@ class Users_model extends CI_Model {
                 " . $this->db->escape($data['password']) . ",
                 " . $this->db->escape($data['is_admin']) . ",
                 '0',
-                '" . date('Y-m-d H:i:s') . "',
-                '" . date('Y-m-d H:i:s') . "',
+                '" . date('Y-m-d H:i') . "',
+                '" . date('Y-m-d H:i') . "',
                 " . $this->db->escape($user['id']) . " ,
                 " . $this->db->escape($this->_sitename_id['id']) . " 
             )
@@ -217,7 +217,7 @@ class Users_model extends CI_Model {
             UPDATE {$this->_db}
             SET
         ";
-        $data_user = $this->get_user($id);    
+   
         if ($data['password'] != '')
         {
             // secure password
@@ -232,7 +232,7 @@ class Users_model extends CI_Model {
 
         $sql .= "
                 viewpass = " . $this->db->escape($data['password']) . ",
-                updated = '" . date('Y-m-d H:i:s') . "',
+                updated = '" . date('Y-m-d H:i') . "',
                 updateby = " . $this->db->escape($user['id']) . "    
             WHERE id = " . $this->db->escape($data['id']) . "
                 AND deleted = '0'
@@ -241,7 +241,6 @@ class Users_model extends CI_Model {
         $this->db->query($sql);
         
         if ($this->db->affected_rows()){
-            log_message('info', sprintf(lang('log edit_customer'), $user['username'],$data_user['username'],$this->config->item('sitename')));
             return TRUE;
         }else{
             return FALSE;
@@ -270,7 +269,7 @@ class Users_model extends CI_Model {
             UPDATE {$this->_db}
             SET
                 deleted = '1',
-                updated = '" . date('Y-m-d H:i:s') . "',
+                updated = '" . date('Y-m-d H:i') . "',
                 updateby = " . $this->db->escape($user['id']) . "
             WHERE id = " . $this->db->escape($id) . "
                 AND id > 1 AND site_id = ".$data_user['site_id']."

@@ -35,8 +35,8 @@ $lang['users col last_name']                  = "Last Name";
 $lang['users col user_id']                    = "ID";
 $lang['users col username']                   = "Username";
 $lang['users col createby']                   = "Create by";
-$lang['users col updated']                   = "Last Update";
-$lang['users col sitename']                   = "Company";
+$lang['users col updated']                   = "Oppdatert";
+$lang['users col sitename']                   = "Kunde";
 $lang['users col viewpass']                   = "Password";
 
 

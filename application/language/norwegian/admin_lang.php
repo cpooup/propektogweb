@@ -6,7 +6,9 @@
 // Titles
 $lang['admin title admin']                = "Prekonteringsliste";
 $lang['admin label username']             = "Hello %s!";
-
+$lang['admin label Home']             = "Hjem";
+$lang['admin label Users']             = "Brukere";
+$lang['admin label Companies']             = "Companies";
 // Buttons
 $lang['admin button delete']              = "Delete";
 $lang['admin button edit']                = "Edit";

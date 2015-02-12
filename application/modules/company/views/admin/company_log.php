@@ -13,7 +13,7 @@
                     <?php foreach ($logs as $value) : ?>
                         <tr>
                             <td>
-                                <a href="<?php echo $this_url.'/log_view/'.$sitename.'|'.str_replace('.php','/',$value); ?>"><?php echo str_replace('.php','',$value); ?></a>
+                                <a href="<?php echo $this_url.'/log_view/'.$sitename.'_'.str_replace('.php','/',$value); ?>"><?php echo str_replace('.php','',$value); ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

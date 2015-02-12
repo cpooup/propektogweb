@@ -8,10 +8,16 @@
                         <?php if ($sort == 'sitename') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                     <td>
-                        <?php echo lang('log'); ?>
+                        <?php echo lang('company title name'); ?>
+                    </td>
+                    <td>
+                        <?php echo lang('company title email'); ?>
                     </td>
                     <td>
                         <?php echo lang('users title Logo'); ?>
+                    </td>
+                    <td>
+                        <?php echo lang('log'); ?>
                     </td>
                 </tr>
             </thead>
@@ -23,8 +29,12 @@
                                     <?php echo $value['sitename']; ?>
                             </td>
                             <td>
-                                <a href="<?php echo $this_url.'/log/'.$value['sitename']; ?>"><?php echo lang('view'); ?></a>
+                                    <?php echo $value['sitename_name']; ?>
                             </td>
+                            <td>
+                                    <?php echo $value['sitename_email']; ?>
+                            </td>
+                           
                             <td>
                                     <?php 
                                     if($this->config->item('master_sitename')==$value['sitename']){
@@ -47,6 +57,9 @@
                                         echo '<img src="'.$logo.'" alt="logo" />';
                                     }
                                     ?>
+                            </td>
+                             <td>
+                                <a href="<?php echo $this_url.'/log/'.$value['sitename']; ?>"><?php echo lang('view'); ?></a>
                             </td>
                             <td>
                                 <div class="btn-group pull-right">

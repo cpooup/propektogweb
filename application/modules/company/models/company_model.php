@@ -120,9 +120,11 @@ class Company_model extends CI_Model {
         //Add company
         $sql = "
             INSERT INTO {$this->_db} (
-                sitename
+                sitename, sitename_name, sitename_email
             ) VALUES (
-                " . $this->db->escape(strtolower($data['sitename'])) . "
+                " . $this->db->escape(strtolower($data['sitename'])) . ",
+                " . $this->db->escape($data['sitename_name']) . ",
+                " . $this->db->escape($data['sitename_email']) . "
             )
         ";
 
@@ -145,8 +147,8 @@ class Company_model extends CI_Model {
                     " . $this->db->escape($data['sitename']) . ",
                     " . $this->db->escape($data['is_admin']) . ",
                     '0',
-                    '" . date('Y-m-d H:i:s') . "',
-                    '" . date('Y-m-d H:i:s') . "',
+                    '" . date('Y-m-d H:i') . "',
+                    '" . date('Y-m-d H:i') . "',
                     " . $this->db->escape($user['id']) . " ,
                     " . $this->db->escape($id) . " 
                 )
@@ -178,7 +180,40 @@ class Company_model extends CI_Model {
         
         
     }
+    
+    /**
+     * Edit an existing company
+     * 
+     * @param array $data
+     * @return bool
+     */
+    function edit_company($data=array())
+    {
+        if (empty($data))
+            return FALSE;
+        $user = $this->session->userdata('logged_in');
+        $sql = "
+            UPDATE {$this->_db}
+            SET
+        ";  
 
+
+        $sql .= "
+                sitename_name = " . $this->db->escape($data['sitename_name']) . ",
+                sitename_email = " . $this->db->escape($data['sitename_email']) . "    
+            WHERE id = " . $this->db->escape($data['id']) . "
+        ";
+
+        $this->db->query($sql);
+        
+        if ($this->db->affected_rows()){
+            log_message('info', sprintf(lang('log edit_company'), $user['username'],$data['sitename']));
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+    
     // Get sitename id
     function get_sitename_id()
     {
