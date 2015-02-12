@@ -375,5 +375,5 @@ $config['modules_locations'] = array(
 /* Location: ./application/config/config.php */
 
 // Master site setting 
-$config['master_sitename'] = 'propektogweb';
+$config['master_sitename'] = 'master';
 $config['sitename'] = array_shift((explode(".",$_SERVER['HTTP_HOST'])));
