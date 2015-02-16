@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>favicon.ico?v=<?php echo $site_version; ?>">
 
-    <title><?php echo $page_title; ?> - <?php echo $site_title; ?></title>
+    <title><?php echo $page_title; ?></title>
 
     <?php if (isset($css_files) && is_array($css_files)) : ?>
         <?php foreach ($css_files as $css) : ?>

@@ -7,7 +7,7 @@
     <meta name="description" content="<?php echo $description; ?>">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>favicon.ico?v=<?php echo $site_version; ?>">
 
-    <title><?php echo $page_title; ?> - <?php echo $site_title; ?></title>
+    <title><?php echo $page_title; ?> - <?php echo lang('site_name'); ?></title>
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>themes/default/css/default.css?v=<?php echo $site_version; ?>">
 
@@ -37,7 +37,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo base_url(); ?>"><?php echo $this->settings->site_name; ?></a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>"><?php echo lang('site_name'); ?></a>
             </div>
             <div class="navbar-collapse collapse">
                 <?php // Nav bar left ?>

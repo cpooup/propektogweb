@@ -4,6 +4,8 @@
  */
 
 // Titles
+$lang['site_name']                   = "Alfaflow";
+
 $lang['users title forgot']                   = "Forgot Password";
 $lang['users title login']                    = "Login";
 $lang['users title profile']                  = "Profile";
