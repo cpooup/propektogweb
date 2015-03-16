@@ -551,7 +551,11 @@ class Admin extends Admin_Controller {
                         $users['results'][$key]['Status'] = lang('admin input inactive');
                     }
                 }
-                
+                if ($user['on_hold'] == 0){
+                    $users['results'][$key][lang('export col on_hold')] = '';
+                }else{
+                    $users['results'][$key][lang('export col on_hold')] = lang('export col on_hold');
+                }
                 //Fix column in array
                 unset($users['results'][$key]['name']);
                 unset($users['results'][$key]['email']);
@@ -579,6 +583,7 @@ class Admin extends Admin_Controller {
                 unset($users['results'][$key]['username']);
                 unset($users['results'][$key]['sitename']);
                 unset($users['results'][$key]['site_id']);
+                unset($users['results'][$key]['on_hold']);
             }
 
             // export the file

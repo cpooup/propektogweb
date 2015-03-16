@@ -35,6 +35,8 @@ class Customers_model extends CI_Model {
     function get_all($limit=0, $offset=0, $filters=array(), $sort='name', $dir='ASC',$filters_tabs=array())
     {   
         
+        //$sql ="ALTER TABLE `customers` ADD `on_hold` ENUM('0','1') NOT NULL ;";
+        //$this->db->query($sql);
         if($this->config->item('master_sitename')==$this->config->item('sitename')){
             $sql = "
                 SELECT SQL_CALC_FOUND_ROWS c.*,d.*,p.*,u.username,s.sitename
@@ -190,17 +192,18 @@ class Customers_model extends CI_Model {
         $user = $this->session->userdata('logged_in');
         $sql = "
             INSERT INTO {$this->_db} (
-                name, email, priority, approveby,comment , created, updated, updateby, site_id
+                name, email, priority, approveby,comment , created, updated, updateby, site_id, on_hold
             ) VALUES (
                 " . $this->db->escape($data['name']) . ",
                 " . $this->db->escape($data['email']) . ",
                 " . $this->db->escape($data['priority']) . ",
+                " . $this->db->escape($data['approveby']) . ",    
                 " . $this->db->escape($data['comment']) . ",
-                " . $this->db->escape($data['approveby']) . ",
                 '" . date('Y-m-d H:i:s') . "',
                 '" . date('Y-m-d H:i:s') . "',
                 " . $this->db->escape($user['id']) . " ,
-                " . $this->db->escape($this->_sitename_id['id']) . " 
+                " . $this->db->escape($this->_sitename_id['id']) . " ,
+                " . $this->db->escape($data['on_hold']) . "
             )
         ";
             
@@ -272,7 +275,8 @@ class Customers_model extends CI_Model {
             approveby = " . $this->db->escape($data['approveby']) . ",
             comment = " . $this->db->escape($data['comment']) . ",    
             updated = '" . date('Y-m-d H:i:s') . "',
-            updateby = " . $this->db->escape($user['id']) . "
+            updateby = " . $this->db->escape($user['id']) . ",
+            on_hold = " . $this->db->escape($data['on_hold']) . "
             WHERE id = " . $this->db->escape($data['id']) . "
         ";
 

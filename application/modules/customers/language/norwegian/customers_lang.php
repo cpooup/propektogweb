@@ -74,7 +74,7 @@ $lang['4posting_wednesday1']                 = "onsdag<br>";
 $lang['5posting_thursday1']                 = "torsdag<br>";
 $lang['6posting_friday1']                 = "fredag";
 
-
+$lang['on hold']                 = "On Hold";
 // Form Inputs
 $lang['customers input email']                    = "Email";
 $lang['customers input name']               = "Selskap";
@@ -174,6 +174,8 @@ $lang['export posting_tuesday1']                 = "tirsdag \r\n";
 $lang['export posting_wednesday1']                 = "onsdag \r\n";
 $lang['export posting_thursday1']                 = "torsdag \r\n";
 $lang['export posting_friday1']                 = "fredag";
+
+$lang['export col on_hold']                 = "On Hold";
 
 //Tabs
 $lang['customers tab1']                 = "alle";

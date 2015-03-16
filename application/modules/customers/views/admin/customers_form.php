@@ -86,7 +86,19 @@
                           <?php echo form_textarea(array('name'=>'comment','cols' => '30', 'rows' => '2', 'value'=>set_value('comment', (isset($user['comment']) ? $user['comment'] : '')), 'class'=>'form-control', 'placeholder'=>lang('customers input enter_comment'))); ?>
                         </div>
                     </div>
+                    <?php echo form_hidden('on_hold', (isset($user['on_hold']) ? $user['on_hold'] : '')); ?>
                 <?php else: ?>
+                <div class="form-group">
+                    <label for="posting"></label>
+                    <div class="col-md-12 posting">
+                            <label class="checkbox-inline">
+                            <input type="checkbox" id="on_hold" name="on_hold" <?php echo $user['on_hold']>0?'checked':'';?> value="1"> <?php echo lang('on hold');?>
+                          </label>
+                    </div>
+                    <div id="posting_alert" class="alert alert-danger">
+                        <?php echo lang('customers msg select at least one day');?>
+                    </div>
+                </div>
                         <?php echo form_hidden('comment', (isset($user['comment']) ? $user['comment'] : '')); ?>
                 <?php endif; ?>
                 

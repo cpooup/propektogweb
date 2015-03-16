@@ -1,6 +1,6 @@
 <div class="row table-responsive">
     <?php echo form_open("customers_list","{$this_url}?sort={$sort}&dir={$dir}&limit={$limit}&offset=0{$filter}", array('role'=>'form', 'id'=>"filters")); ?>
-        <table class="table table-striped table-hover-warning">
+        <table class="table table-hover-warning">
             <thead>
                 <tr>
                     <?php if($column['id']==1) : ?>
@@ -83,27 +83,28 @@
             </thead>
             <tbody>
                 <?php if ($total) : ?>
+                <?php $i = 0; ?>
                     <?php foreach ($customers as $user) : ?>
-                        <tr>
+                        <tr class="<?php echo $user['on_hold']>0?'danger':(($i%2==0) ? "active" : ""); ?>">
                             <?php if($column['id']==1) : ?>
-                                <td<?php echo (($sort == 'id') ? ' class="sorted"' : ''); ?>>
+                                <td<?php echo (($sort == 'id') ? ' class=""' : ''); ?>>
                                     <?php echo $user['id']; ?>
                                 </td>
                             <?php endif; ?>
                             <?php if($column['sitename']==1) : ?>
                                 <?php if($this->config->item('master_sitename')==$this->config->item('sitename')) : ?>
-                                    <td<?php echo (($sort == 'sitename') ? ' class="sorted"' : ''); ?>>
+                                    <td<?php echo (($sort == 'sitename') ? ' class=""' : ''); ?>>
                                         <?php echo $user['sitename']; ?>
                                     </td>
                                 <?php endif; ?>
                             <?php endif; ?>
                             <?php if($column['name']==1) : ?>
-                                <td<?php echo (($sort == 'name') ? ' class="sorted"' : ''); ?>>
+                                <td<?php echo (($sort == 'name') ? ' class=""' : ''); ?>>
                                     <?php echo $user['name']; ?>
                                 </td>
                             <?php endif; ?>
                             <?php if($column['email']==1) : ?>
-                                <td<?php echo (($sort == 'email') ? ' class="sorted"' : ''); ?>>
+                                <td<?php echo (($sort == 'email') ? ' class=""' : ''); ?>>
                                     <?php echo $user['email']; ?>
                                 </td>
                             <?php endif; ?>
@@ -130,46 +131,48 @@
                                 </td>
                             <?php endif; ?>
                             <?php if($column['priority']==1) : ?> 
-                                <td<?php echo (($sort == 'priority') ? ' class="sorted"' : ''); ?>>
+                                <td<?php echo (($sort == 'priority') ? ' class=""' : ''); ?>>
                                     <?php echo lang('customers select priority'.$user['priority']); ?>
                                 </td>
                             <?php endif; ?>
                             <?php if($column['comment']==1) : ?> 
                                     <?php if($this->config->item('master_sitename')==$this->config->item('sitename')) : ?>
-                                        <td<?php echo (($sort == 'comment') ? ' class="sorted"' : ''); ?>>
+                                        <td<?php echo (($sort == 'comment') ? ' class=""' : ''); ?>>
                                             <?php echo $user['comment']; ?>
                                         </td>
                                     <?php endif; ?>
                             <?php endif; ?>
                             <?php if($column['approveby']==1) : ?>            
-                                <td<?php echo (($sort == 'approveby') ? ' class="sorted"' : ''); ?>>
+                                <td<?php echo (($sort == 'approveby') ? ' class=""' : ''); ?>>
                                     <?php echo $user['approveby']; ?>
                                 </td>
                             <?php endif; ?>
                             <?php if($column['updated']==1) : ?>
-                                <td<?php echo (($sort == 'updated') ? ' class="sorted"' : ''); ?>>
+                                <td<?php echo (($sort == 'updated') ? ' class=""' : ''); ?>>
                                     <?php echo $user['updated']; ?>
                                 </td>
                             <?php endif; ?>
                             <?php if($column['updateby']==1) : ?> 
-                                <td<?php echo (($sort == 'updateby') ? ' class="sorted"' : ''); ?>>
+                                <td<?php echo (($sort == 'updateby') ? ' class=""' : ''); ?>>
                                     <?php echo $user['username']; ?>
                                 </td>
                             <?php endif; ?>
                             <?php if($column['deleted']==1) : ?> 
                                 <?php if($this->config->item('master_sitename')==$this->config->item('sitename')) : ?>
-                                    <td<?php echo (($sort == 'deleted') ? ' class="sorted"' : ''); ?>>
+                                    <td<?php echo (($sort == 'deleted') ? ' class=""' : ''); ?>>
                                         <?php echo (!$user['deleted']) ? '<span class="active">' . lang('admin input active') . '</span>' : '<span class="inactive">' . lang('admin input inactive') . '</span>'; ?>
                                     </td>
                                 <?php endif; ?>
                             <?php endif; ?>
                             <td>
                                 <div class="btn-group pull-right">
+                                    
                                     <a href="<?php echo $this_url; ?>/edit/<?php echo $user['id']; ?>" data-toggle="modal" data-target="#modal-edit-<?php echo $user['id']; ?>" class="btn btn-warning" title="<?php echo lang('admin button edit'); ?>"><span class="glyphicon glyphicon-pencil"></span></a>
                                     <a href="#modal-<?php echo $user['id']; ?>" data-toggle="modal" class="btn btn-danger" title="<?php echo lang('admin button delete'); ?>"><span class="glyphicon glyphicon-trash"></span></a>
                                 </div>
                             </td>
                         </tr>
+                        <?php $i++; ?>
                     <?php endforeach; ?>
                 <?php else : ?>
                     <tr>
