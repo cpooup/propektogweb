@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `customers` (
-  `id` int(11) unsigned NOT NULL auto_increment,
+   `id` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(150) NOT NULL,
   `email` varchar(256) NOT NULL,
   `priority` enum('0','1') NOT NULL,
@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS `customers` (
   `updated` datetime NOT NULL,
   `updateby` int(11) NOT NULL,
   `site_id` int(11) NOT NULL,
+  `on_hold` enum('0','1') NOT NULL,
+  `comment_privat` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -72,8 +74,9 @@ INSERT INTO `customers_columns` (`id`, `name`, `status`, `site_id`, `ordering`) 
 (9, 'comment', '1', 1, 9),
 (10, 'approveby', '0', 1, 10),
 (11, 'deleted', '1', 1, 11),
-(13, 'updated', '1', 1, 12),
-(14, 'updateby', '1', 1, 13);
+(12, 'updated', '1', 1, 12),
+(13, 'updateby', '1', 1, 13),
+(14, 'comment_privat', '1', 1, 14);
 
 -- --------------------------------------------------------
 
@@ -229,8 +232,8 @@ CREATE TABLE IF NOT EXISTS `sitename` (
 -- Dumping data for table `sitename`
 --
 
-INSERT INTO `sitename` (`id`, `sitename`) VALUES
-(1, 'propektogweb');
+INSERT INTO `sitename` (`id`, `sitename`, `sitename_name`, `sitename_email`) VALUES
+(1, 'master', '', ''),
 
 -- --------------------------------------------------------
 

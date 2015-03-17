@@ -80,12 +80,22 @@
                     </div>
                 </div>
                 <?php if($this->config->item('master_sitename')==$this->config->item('sitename')) : ?>
-                    <div class="form-group has-feedback <?php echo (form_error('comment')) ? 'has-error': ''; ?>">
+                    <div class="form-group has-feedback <?php echo (form_error('comment_privat')) ? 'has-error': ''; ?>">
+                        <div class="input-group">
+                          <?php echo form_span(lang('customers col comment_privat'), 'comment_privat', array('class'=>'input-group-addon')); ?>
+                          <?php echo form_textarea(array('name'=>'comment_privat','cols' => '30', 'rows' => '2', 'value'=>set_value('comment_privat', (isset($user['comment_privat']) ? $user['comment_privat'] : '')), 'class'=>'form-control', 'placeholder'=>lang('customers input enter_comment_privat'))); ?>
+                        </div>
+                    </div>
+                <?php else: ?>
+                        <?php echo form_hidden('comment_privat', (isset($user['comment_privat']) ? $user['comment_privat'] : '')); ?>
+                <?php endif; ?>
+                <div class="form-group has-feedback <?php echo (form_error('comment')) ? 'has-error': ''; ?>">
                         <div class="input-group">
                           <?php echo form_span(lang('customers col comment'), 'comment', array('class'=>'input-group-addon')); ?>
                           <?php echo form_textarea(array('name'=>'comment','cols' => '30', 'rows' => '2', 'value'=>set_value('comment', (isset($user['comment']) ? $user['comment'] : '')), 'class'=>'form-control', 'placeholder'=>lang('customers input enter_comment'))); ?>
                         </div>
-                    </div>
+                </div>
+                <?php if($this->config->item('master_sitename')==$this->config->item('sitename')) : ?>
                     <?php echo form_hidden('on_hold', (isset($user['on_hold']) ? $user['on_hold'] : '')); ?>
                 <?php else: ?>
                 <div class="form-group">
@@ -99,9 +109,7 @@
                         <?php echo lang('customers msg select at least one day');?>
                     </div>
                 </div>
-                        <?php echo form_hidden('comment', (isset($user['comment']) ? $user['comment'] : '')); ?>
                 <?php endif; ?>
-                
             </form>
         </div>
         <div class="modal-footer">

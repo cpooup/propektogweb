@@ -166,6 +166,7 @@ class Company_model extends CI_Model {
                     ('posting', '1', ".$id.", 6),
                     ('priority', '0', ".$id.", 8),
                     ('comment', '0', ".$id.", 9),
+                    ('comment_privat', '0', ".$id.", 9),
                     ('approveby', '0', ".$id.", 10),
                     ('deleted', '0', ".$id.", 11),
                     ('updated', '1', ".$id.", 12),

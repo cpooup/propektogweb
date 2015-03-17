@@ -35,8 +35,7 @@ class Customers_model extends CI_Model {
     function get_all($limit=0, $offset=0, $filters=array(), $sort='name', $dir='ASC',$filters_tabs=array())
     {   
         
-        //$sql ="ALTER TABLE `customers` ADD `on_hold` ENUM('0','1') NOT NULL ;";
-        //$this->db->query($sql);
+        
         if($this->config->item('master_sitename')==$this->config->item('sitename')){
             $sql = "
                 SELECT SQL_CALC_FOUND_ROWS c.*,d.*,p.*,u.username,s.sitename
@@ -192,18 +191,19 @@ class Customers_model extends CI_Model {
         $user = $this->session->userdata('logged_in');
         $sql = "
             INSERT INTO {$this->_db} (
-                name, email, priority, approveby,comment , created, updated, updateby, site_id, on_hold
+                name, email, priority, approveby,comment, comment_privat, created, updated, updateby, site_id, on_hold
             ) VALUES (
                 " . $this->db->escape($data['name']) . ",
                 " . $this->db->escape($data['email']) . ",
                 " . $this->db->escape($data['priority']) . ",
                 " . $this->db->escape($data['approveby']) . ",    
                 " . $this->db->escape($data['comment']) . ",
+                " . $this->db->escape($data['comment_privat']) . ",
                 '" . date('Y-m-d H:i:s') . "',
                 '" . date('Y-m-d H:i:s') . "',
                 " . $this->db->escape($user['id']) . " ,
                 " . $this->db->escape($this->_sitename_id['id']) . " ,
-                " . $this->db->escape($data['on_hold']) . "
+                " . $this->db->escape(isset($data['on_hold'])?$data['on_hold']:'0') . "
             )
         ";
             
@@ -273,10 +273,11 @@ class Customers_model extends CI_Model {
             email = " . $this->db->escape($data['email']) . ",
             priority = " . $this->db->escape($data['priority']) . ",
             approveby = " . $this->db->escape($data['approveby']) . ",
-            comment = " . $this->db->escape($data['comment']) . ",    
+            comment = " . $this->db->escape($data['comment']) . ", 
+            comment_privat = " . $this->db->escape($data['comment_privat']) . ", 
             updated = '" . date('Y-m-d H:i:s') . "',
             updateby = " . $this->db->escape($user['id']) . ",
-            on_hold = " . $this->db->escape($data['on_hold']) . "
+            on_hold = " . $this->db->escape(isset($data['on_hold'])?$data['on_hold']:'0') . "
             WHERE id = " . $this->db->escape($data['id']) . "
         ";
 
@@ -394,6 +395,45 @@ class Customers_model extends CI_Model {
         }else{
             return FALSE;
         }
+    }
+    
+    /**
+     * Update an existing customer column
+     * 
+     * @param array $name
+     * @return bool
+     */
+    function update_column($name)
+    {
+        $sql = "
+                SELECT s.id
+                FROM sitename as s
+            ";
+        $query = $this->db->query($sql);
+        $data = $query->result_array();
+        foreach ($data as $key=>$user)
+        {
+             // insert column view for company
+            $sql = "
+                INSERT INTO `customers_columns` (`name`, `status`, `site_id`, `ordering`) VALUES
+                    ('".$name."', '0', ".$user['id'].", 14);
+            ";
+            $this->db->query($sql);
+        }
+        return TRUE;
+    }
+    
+     /**
+     * Update an existing customer TABLE
+     * 
+     * @param array $name
+     * @return bool
+     */
+    function update_table()
+    {
+        $sql ="ALTER TABLE `customers` ADD `comment_privat` TEXT NOT NULL ;";
+        $this->db->query($sql);
+        return TRUE;
     }
 
 }

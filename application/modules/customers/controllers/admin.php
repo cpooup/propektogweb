@@ -71,6 +71,9 @@ class Admin extends Admin_Controller {
         if ($this->input->get('comment'))
             $filters['comment'] = $this->input->get('comment', TRUE);
         
+        if ($this->input->get('comment_privat'))
+            $filters['comment_privat'] = $this->input->get('comment_privat', TRUE);
+        
         if ($this->input->get('approveby'))
             $filters['approveby'] = $this->input->get('approveby', TRUE);
         
@@ -136,6 +139,9 @@ class Admin extends Admin_Controller {
 
                 if ($this->input->post('comment'))
                     $filters['comment'] = $this->input->post('comment', TRUE);
+                
+                if ($this->input->post('comment_privat'))
+                    $filters['comment_privat'] = $this->input->post('comment_privat', TRUE);
 
                 if ($this->input->post('approveby'))
                     $filters['approveby'] = $this->input->post('approveby', TRUE);
@@ -490,6 +496,9 @@ class Admin extends Admin_Controller {
         if ($this->input->get('comment'))
             $filters['comment'] = $this->input->get('comment', TRUE);
         
+        if ($this->input->get('comment_privat'))
+            $filters['comment_privat'] = $this->input->get('comment_privat', TRUE);
+        
         if ($this->input->get('approveby'))
             $filters['approveby'] = $this->input->get('approveby', TRUE);
         
@@ -536,8 +545,9 @@ class Admin extends Admin_Controller {
                 $users['results'][$key][lang('export col name')] = $user['name'];
                 $users['results'][$key][lang('export col email')] = $user['email'];
                 if($this->config->item('master_sitename')==$this->config->item('sitename')){
-                    $users['results'][$key][lang('export col comment')] =  $user['comment'];
+                    $users['results'][$key][lang('export col comment_privat')] =  $user['comment_privat'];
                 }
+                $users['results'][$key][lang('export col comment')] =  $user['comment'];
                 $users['results'][$key][lang('export col data_entry')] = lang('export data_entry_monday'.$user['data_entry_monday']).lang('export data_entry_tuesday'.$user['data_entry_tuesday']).lang('export data_entry_wednesday'.$user['data_entry_wednesday']).lang('export data_entry_thursday'.$user['data_entry_thursday']).lang('export data_entry_friday'.$user['data_entry_friday']);
                 $users['results'][$key][lang('export col posting')] = lang('export posting_monday'.$user['posting_monday']).lang('export posting_tuesday'.$user['posting_tuesday']).lang('export posting_wednesday'.$user['posting_wednesday']).lang('export posting_thursday'.$user['posting_thursday']).lang('export posting_friday'.$user['posting_friday']);
                 $users['results'][$key][lang('export col approveby')] =  $user['approveby'];
@@ -561,6 +571,7 @@ class Admin extends Admin_Controller {
                 unset($users['results'][$key]['email']);
                 unset($users['results'][$key]['priority']);
                 unset($users['results'][$key]['comment']);
+                unset($users['results'][$key]['comment_privat']);
                 unset($users['results'][$key]['approveby']);
                 unset($users['results'][$key]['deleted']);
                 unset($users['results'][$key]['created']);
@@ -597,5 +608,38 @@ class Admin extends Admin_Controller {
         }
 
         exit;
+    }
+    
+    public function update_customers_column()
+    {
+        $column_name = $this->uri->segment(4);
+        if($column_name){
+        // save the changes
+            $saved = $this->customers_model->update_column($column_name);
+
+            if ($saved)
+                $this->session->set_flashdata('message', lang('customers msg edit_column_success'));
+            else
+                $this->session->set_flashdata('error', lang('customers error edit_column_failed'));
+
+            // return to list and display message
+            redirect($this->_redirect_url);
+        }
+        exit();
+    }
+    
+    public function update_customers_table()
+    {
+        // save the changes
+            $saved = $this->customers_model->update_table();
+
+            if ($saved)
+                $this->session->set_flashdata('message', lang('customers msg edit_column_success'));
+            else
+                $this->session->set_flashdata('error', lang('customers error edit_column_failed'));
+
+            // return to list and display message
+            redirect($this->_redirect_url);
+        exit();
     }
 }

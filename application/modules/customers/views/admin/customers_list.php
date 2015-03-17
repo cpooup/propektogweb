@@ -45,14 +45,20 @@
                             <?php if ($sort == 'priority') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                         </td>
                     <?php endif; ?>
-                    <?php if($column['comment']==1) : ?> 
+                    <?php if($column['comment_privat']==1) : ?> 
                         <?php if($this->config->item('master_sitename')==$this->config->item('sitename')) : ?>
                             <td>
-                                <a href="<?php echo current_url(); ?>?sort=comment&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col comment'); ?></a>
-                                <?php if ($sort == 'comment') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
+                                <a href="<?php echo current_url(); ?>?sort=comment_privat&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col comment_privat'); ?></a>
+                                <?php if ($sort == 'comment_privat') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                             </td>
                         <?php endif; ?>
                     <?php endif; ?>
+                    <?php if($column['comment']==1) : ?> 
+                        <td>
+                            <a href="<?php echo current_url(); ?>?sort=comment&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col comment'); ?></a>
+                            <?php if ($sort == 'comment') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
+                        </td>
+                    <?php endif; ?>        
                     <?php if($column['approveby']==1) : ?>    
                         <td>
                             <a href="<?php echo current_url(); ?>?sort=approveby&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col approveby'); ?></a>
@@ -135,12 +141,17 @@
                                     <?php echo lang('customers select priority'.$user['priority']); ?>
                                 </td>
                             <?php endif; ?>
-                            <?php if($column['comment']==1) : ?> 
+                            <?php if($column['comment_privat']==1) : ?> 
                                     <?php if($this->config->item('master_sitename')==$this->config->item('sitename')) : ?>
-                                        <td<?php echo (($sort == 'comment') ? ' class=""' : ''); ?>>
-                                            <?php echo $user['comment']; ?>
+                                        <td<?php echo (($sort == 'comment_privat') ? ' class=""' : ''); ?>>
+                                            <?php echo $user['comment_privat']; ?>
                                         </td>
                                     <?php endif; ?>
+                            <?php endif; ?>
+                            <?php if($column['comment']==1) : ?> 
+                                    <td<?php echo (($sort == 'comment') ? ' class=""' : ''); ?>>
+                                        <?php echo $user['comment']; ?>
+                                    </td>
                             <?php endif; ?>
                             <?php if($column['approveby']==1) : ?>            
                                 <td<?php echo (($sort == 'approveby') ? ' class=""' : ''); ?>>

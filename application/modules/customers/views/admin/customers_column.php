@@ -19,7 +19,7 @@
                                 </div>
                                  <?php endif; ?> 
                         <?php else : ?>
-                                <?php if ($column['name']!='comment' && $column['name']!='deleted' && $column['name']!='sitename' && $column['name']!='choice')   : ?>
+                                <?php if ($column['name']!='comment_privat' && $column['name']!='deleted' && $column['name']!='sitename' && $column['name']!='choice')   : ?>
                                     <div class="form-group has-feedback <?php echo (form_error($column['name'])) ? 'has-error': ''; ?>">
                                         <label class="col-sm-4 control-label"><?php echo lang('customers col '.$column['name']);?></label>
                                         <div class="col-sm-8">

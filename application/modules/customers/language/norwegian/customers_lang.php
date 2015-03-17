@@ -38,6 +38,7 @@ $lang['customers col name']                     = 'Selskap';
 $lang['customers col email']                    = "Email";
 $lang['customers col day']                      = "Dag";
 $lang['customers col comment']                  = "Kommentarer";
+$lang['customers col comment_privat']                  = "Privat";
 $lang['customers col approveby']                = "Godkjennere";
 $lang['customers col updated']                  = "Oppdatert";
 $lang['customers col updateby']                 = "Bruker";
@@ -103,7 +104,7 @@ $lang['customers input remember']                 = "Remember me?";
 $lang['customers input enter_name']                        = "Please enter name";
 $lang['customers input enter_email']                        = "Please enter email";
 $lang['customers input enter_comment']                        = "Please enter comment";
-
+$lang['customers input enter_comment_privat']                        = "Please enter comment privat";
 
 // Help
 $lang['customers help passwords']                 = "Only enter passwords if you want to change it.";
@@ -152,6 +153,7 @@ $lang['export col name']                     = 'Selskap';
 $lang['export col email']                    = "Email";
 $lang['export col day']                      = "Dag";
 $lang['export col comment']                  = "Kommentarer";
+$lang['export col comment_privat']           = "Privat";
 $lang['export col approveby']                = "Godkjennere";
 $lang['export col updated']                  = "Oppdatert";
 $lang['export col updateby']                 = "Bruker";
