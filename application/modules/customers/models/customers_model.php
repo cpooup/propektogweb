@@ -82,7 +82,7 @@ class Customers_model extends CI_Model {
             $sql .=" AND (".$sql_day.")";
         }
 
-        $sql .= " ORDER BY {$sort} {$dir}";
+        $sql .= " GROUP BY c.id ORDER BY {$sort} {$dir}" ;
 
         if ($limit)
         {
