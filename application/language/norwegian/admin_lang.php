@@ -9,6 +9,8 @@ $lang['admin label username']             = "Hello %s!";
 $lang['admin label Home']             = "Hjem";
 $lang['admin label Users']             = "Brukere";
 $lang['admin label Companies']             = "Companies";
+$lang['admin label Holiday']             = "Holiday";
+$lang['admin label Task List']             = "Task List";
 // Buttons
 $lang['admin button delete']              = "Delete";
 $lang['admin button edit']                = "Edit";

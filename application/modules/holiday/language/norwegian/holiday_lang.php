@@ -8,13 +8,13 @@ $lang['users title forgot']                   = "Forgot Password";
 $lang['users title login']                    = "Login";
 $lang['users title profile']                  = "Profile";
 $lang['users title register']                 = "Register";
-$lang['users title user_add']                 = "Add User";
+$lang['users title user_add']                 = "Add Holiday";
 $lang['users title user_delete']              = "Confirm Delete User";
 $lang['users title user_edit']                = "Edit User";
-$lang['users title user_list']                = "Company List";
+$lang['users title user_list']                = "Holiday List";
 $lang['users title account_login']            = "Use a local account to log in.";
 $lang['users manage account']            = "Manage Account";
-$lang['users title edit_logo'] = "Edit Kunde";
+$lang['users title edit_logo'] = "Edit Holiday";
 $lang['users title Logo'] = "Logo";
 $lang['log'] = "Log";
 $lang['detail'] = "Detail";
@@ -22,16 +22,15 @@ $lang['view'] = "View";
 $lang['users list status']            = "List Status";
 $lang['company title name']                = "Name";
 $lang['company title email']                = "Email";
-$lang['users title Task List']                   = "Task List";
-$lang['users title Task Log']                   = "Task Log";
+$lang['company title date']                = "Date";
 // Buttons
 
-$lang['users button add_new_user']            = "Add New Kunde";
+$lang['users button add_new_user']            = "Add New Holiday";
 $lang['users button register']                = "Create Account";
 $lang['users button reset_password']          = "Reset Password";
 
 // Tooltips
-$lang['users tooltip add_new_user']           = "Create a new Kunde.";
+$lang['users tooltip add_new_user']           = "Create a new Holiday.";
 
 // Links
 $lang['users link forgot_password']           = "Forgot your password?";
@@ -45,7 +44,7 @@ $lang['users col user_id']                    = "ID";
 $lang['users col username']                   = "Username";
 $lang['users col createby']                   = "Create by";
 $lang['users col updated']                   = "Last Update";
-$lang['users col sitename']                   = "Kunde";
+$lang['users col sitename']                   = "Holiday";
 $lang['users col viewpass']                   = "Password";
 
 

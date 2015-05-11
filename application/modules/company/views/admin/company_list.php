@@ -19,6 +19,9 @@
                     <td>
                         <?php echo lang('log'); ?>
                     </td>
+                    <td>
+                        <?php echo lang('users title Task List'); ?>
+                    </td>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +63,12 @@
                             </td>
                              <td>
                                 <a href="<?php echo $this_url.'/log/'.$value['sitename']; ?>"><?php echo lang('view'); ?></a>
+                            </td>
+                            <td>
+                                <?php if($value['list_status'] == 1) : ?>
+                                <a href="<?php echo base_url().'admin/customers/customers_task_list/'.$value['id']; ?>"><?php echo lang('users title Task List'); ?></a>
+                                , <a href="<?php echo base_url().'admin/customers/customers_task_log/'.$value['id']; ?>"><?php echo lang('users title Task Log'); ?></a>
+                                <?php endif; ?>
                             </td>
                             <td>
                                 <div class="btn-group pull-right">

@@ -41,6 +41,14 @@
                     <p class="text-danger"><?php echo lang('company error logo');?></p>
                 </div>
             </div>
+            <div class="form-group has-feedback <?php echo (form_error('list_status')) ? 'has-error': ''; ?>">
+                <label for="posting"></label>
+                    <div class="col-md-12 posting">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="list_status" name="list_status" <?php echo (isset($company['list_status']) && $company['list_status'] =="1"?'checked':'');?> value="1"> <?php echo lang('users list status');?>
+                          </label>
+                    </div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

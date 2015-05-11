@@ -24,7 +24,7 @@ class Admin extends Admin_Controller {
         // set constants
         define('REFERRER', "referrer");
         define('THIS_URL', base_url('admin/company'));
-        define('DEFAULT_LIMIT', $this->settings->per_page_limit);
+        define('DEFAULT_LIMIT', 50);
         define('DEFAULT_OFFSET', 0);
         define('DEFAULT_SORT', "sitename");
         define('DEFAULT_DIR', "asc");

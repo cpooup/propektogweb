@@ -99,7 +99,7 @@ td.sorted {
 .modal-body .input-group input{width: 235px !important;}
 .modal-body .checkbox-inline{margin-left: 0px;font-size: 12px;margin-bottom: 10px;}
 .modal-body input[type="radio"], input[type="checkbox"]{margin: 2px 0 0;}
-select#choice,select#priority {width: 235px;}
+select#choice,select#priority {width: 196px;}
 .modal-body .alert{padding:5px;margin-bottom:0;}
 #data_entry_alert,#posting_alert{display:none;}
 .modal-body textarea.form-control {max-width: 233px;}
@@ -113,6 +113,17 @@ select#choice,select#priority {width: 235px;}
 
 .modal-body #customers_column_form .form-group {clear: both;}
 
-.navbar>.container .navbar-brand {margin-left: 0px;!important;}
+.navbar>.container .navbar-brand {margin-left: 0px !important;}
 .navbar-brand{padding: 4px 15px !important;}
 .navbar-right .logo{padding: 4px 15px !important;}
+
+.modal-body .input-group input.list_date{width: 135px !important;}
+.list_repeat{width: 60px !important;}
+.form-group .task span{min-width: 151px;}
+.task .task_date tr td{  border: 1px solid #ddd;text-align: center;vertical-align: middle;}
+.task .task_date .btn-primary a{color:#fff;}
+.task .task_date .btn-success a{color:#fff;}
+.task .task_date .btn-warning a{color:#fff;}
+.task .task_date .normal:hover{  color: #fff;background-color: #5cb85c;border-color: #4cae4c;}
+.task .task_date .normal:hover a{color:#fff;}
+.task .table>thead:first-child>tr:first-child>td{border-top:1px solid #ddd;}

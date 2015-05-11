@@ -178,13 +178,15 @@ class Admin_Controller extends MY_Controller {
             'css_files'     => array(
                 base_url("themes/admin/css/bootstrap.min.css"),
                 base_url("themes/admin/css/font-awesome.min.css"),
+                base_url("themes/admin/css/bootstrap-datepicker.css"),
                 base_url("themes/admin/css/admin.css")
             ),
             'js_files' => array(
                 base_url("/themes/admin/js/jquery.min.js"),
                 base_url("/themes/admin/js/bootstrap.min.js"),
                 base_url("/themes/admin/js/jquery.validate.min.js"),
-                base_url("/themes/admin/js/tinymce.min.js")
+                base_url("/themes/admin/js/tinymce.min.js"),
+                base_url("/themes/admin/js/bootstrap-datepicker.js")
             ),
             'js_files_i18n' => array(
                 $this->jsi18n->translate("/themes/admin/js/admin_i18n.js")

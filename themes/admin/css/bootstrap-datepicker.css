@@ -445,9 +445,9 @@
   cursor: default;
   background-color: transparent;
 }
-.input-group {
+/*.input-group {
     width: 140px;
-}
+}*/
 .input-group.date .input-group-addon i,
 .input-group.date .input-group-addon i {
   display: block;

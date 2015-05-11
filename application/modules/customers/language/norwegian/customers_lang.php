@@ -18,6 +18,17 @@ $lang['customer edit']                   = "Edit ID: %s";
 $lang['customers title column_edit']                = "Edit view";
 $lang['enable']                                 = "Enable";
 $lang['disable']                                 = "Disable";
+$lang['customer list date']          = "Dato";
+$lang['customers title task_list']                    = "Task List";
+$lang['users title task_log']                    = "Task Log";
+$lang['Mon']          = "Mandag";
+$lang['Tue']          = "Tirsdag";
+$lang['Wed']          = "Onsdag";
+$lang['Thu']          = "Torsdag";
+$lang['Fri']          = "Fredag";
+$lang['Sat']          = "sat";
+$lang['Sun']          = "sun";
+
 // Buttons
 $lang['customers button add_new_user']            = "Legg til";
 $lang['customers button register']                = "Create Account";
@@ -33,6 +44,11 @@ $lang['customers link forgot_password']           = "Forgot your password?";
 $lang['customers link register_account']          = "Register for an account.";
 
 // Table Columns New
+$lang['customers col datetime']                     = 'Date/Time';
+$lang['customers col date']                     = 'Task Date';
+$lang['customers col status']                     = 'Status';
+$lang['customers col task']                     = 'Task';
+$lang['customers col user']                     = 'User';
 $lang['customers col id']                     = 'ID';
 $lang['customers col name']                     = 'Selskap';
 $lang['customers col email']                    = "Email";
@@ -48,7 +64,14 @@ $lang['customers col sitename']                  = "Kunde";
 $lang['customers col created']                  = "Create Date";
 $lang['customers col deleted']                  = "Status";
 $lang['customers col priority']                = "Legg til Leverandør";
-
+$lang['customers col Bankavstemning']                = "Bankavstemning";
+$lang['customers col Lønnskjøring']                = "Lønnskjøring";
+$lang['customers col A Meldinger']                = "A Meldinger";
+$lang['customers col Terminoppgaver']                = "Terminoppgaver";
+$lang['customers col Moms Rapportering']                = "Moms Rapportering";
+$lang['customers col Fakturering']                = "Fakturering";
+$lang['customers col BLANK1']                = "BLANK";
+$lang['customers col BLANK2']                = "BLANK";
 // Result Data Entry Day
 $lang['data_entry_monday1']                 = "mandag<br>";
 $lang['data_entry_tuesday1']                 = "tirsdag<br>";

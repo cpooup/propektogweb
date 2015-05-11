@@ -8,6 +8,7 @@
                 <?php echo form_open('customers_form','', array('role'=>'form')); ?>
                 <?php if (isset($customer_id)) : ?>
                     <?php echo form_hidden('id', $customer_id); ?>
+                    <?php echo form_hidden('site_id', $user['site_id']); ?>
                 <?php endif; ?>
                 <div class="form-group has-feedback <?php echo (form_error('name')) ? 'has-error': ''; ?>">
                     <div class="input-group">
@@ -67,6 +68,64 @@
                         <?php echo lang('customers msg select at least one day');?>
                     </div>
                 </div>
+            <?php if($list_status==1) :?>
+                <div class="form-group has-feedback <?php echo (form_error('start_date3')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col Bankavstemning'), 'start_date3', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date3" type="text" id="start_date3" value="<?=(isset($task_list['start_date3']) ? $task_list['start_date3'] : "")?>" class="form-control list_date"/> 
+                            <?php echo form_dropdown('repeat3', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat3']) ? $task_list['repeat3'] : '0'), 'id="repeat3" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>
+            <div class="form-group has-feedback <?php echo (form_error('start_date4')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col Lønnskjøring'), 'start_date4', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date4" type="text" id="start_date4" value="<?=(isset($task_list['start_date4']) ? $task_list['start_date4'] : "")?>" class="form-control list_date"/> 
+                            <?php echo form_dropdown('repeat4', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat4']) ? $task_list['repeat4'] : '0'), 'id="repeat" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>
+            <div class="form-group has-feedback <?php echo (form_error('start_date5')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col A Meldinger'), 'start_date5', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date5" type="text" id="start_date5" value="<?=(isset($task_list['start_date5']) ? $task_list['start_date5'] : "")?>" class="form-control list_date"/> 
+                            <?php echo form_dropdown('repeat5', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat5']) ? $task_list['repeat5'] : '0'), 'id="repeat5" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>
+            <div class="form-group has-feedback <?php echo (form_error('start_date6')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col Terminoppgaver'), 'start_date', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date6" type="text" id="start_date6" value="<?=(isset($task_list['start_date6']) ? $task_list['start_date6'] : "")?>" class="form-control list_date"/> 
+                            <?php echo form_dropdown('repeat6', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat6']) ? $task_list['repeat6'] : '0'), 'id="repeat6" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>
+                <div class="form-group has-feedback <?php echo (form_error('start_date7')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col Moms Rapportering'), 'start_date7', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date7" type="text" id="start_date7" value="<?=(isset($task_list['start_date7']) ? $task_list['start_date7'] : "")?>" class="form-control list_date"/>    
+                            <?php echo form_dropdown('repeat7', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat7']) ? $task_list['repeat7'] : '0'), 'id="repeat7" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>
+                <div class="form-group has-feedback <?php echo (form_error('start_date8')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col Fakturering'), 'start_date8', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date8" type="text" id="start_date8" value="<?=(isset($task_list['start_date8']) ? $task_list['start_date8'] : "")?>" class="form-control list_date"/>  
+                            <?php echo form_dropdown('repeat8', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat8']) ? $task_list['repeat8'] : '0'), 'id="repeat8" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>
+<!--                <div class="form-group has-feedback <?php echo (form_error('start_date9')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col BLANK1'), 'start_date9', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date9" type="text" id="start_date9" value="<?=(isset($task_list['start_date9']) ? $task_list['start_date9'] : "")?>" class="form-control list_date"/>  
+                            <?php echo form_dropdown('repeat9', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat9']) ? $task_list['repeat9'] : '0'), 'id="repeat9" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>
+                <div class="form-group has-feedback <?php echo (form_error('start_date10')) ? 'has-error': ''; ?>">
+                    <div class="input-group task">
+                        <?php echo form_span(lang('customers col BLANK2'), 'start_date10', array('class'=>'input-group-addon')); ?>
+                            <input placeholder="<?=lang('customer list date');?>" name="start_date10" type="text" id="start_date10" value="<?=(isset($task_list['start_date10']) ? $task_list['start_date10'] : "")?>" class="form-control list_date"/> 
+                            <?php echo form_dropdown('repeat10', array("0"=>0,"1"=>1,"2"=>2), (isset($task_list['repeat10']) ? $task_list['repeat10'] : '0'), 'id="repeat10" class="form-control list_repeat"'); ?>
+                    </div>
+                </div>-->
+                <?php endif; ?>
                 <div class="form-group has-feedback <?php echo (form_error('priority')) ? 'has-error': ''; ?>">
                     <div class="input-group">
                       <?php echo form_span(lang('customers input priority'), 'priority', array('class'=>'input-group-addon')); ?>
@@ -118,3 +177,10 @@
         </div>
     </div> <!-- /.modal-content -->
 </div> <!-- /.modal-dialog -->
+<script>
+        $("#start_date3,#start_date4,#start_date5,#start_date6,#start_date7,#start_date8,#start_date9,#start_date10").datepicker({  
+                    defaultDate: new Date(),
+                    dateFormat: 'mm/dd/yyy',
+                    autoclose: true
+        }); 
+</script>

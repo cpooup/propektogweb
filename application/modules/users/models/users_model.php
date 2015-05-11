@@ -49,7 +49,7 @@ class Users_model extends CI_Model {
                 LEFT JOIN sitename as s ON s.id = u.site_id
                 LEFT JOIN users as uu ON uu.id = u.updateby
                 WHERE u.deleted = '0' AND u.id != ".$user['id']." 
-                AND u.site_id =".$this->_sitename_id['id']."
+                AND u.site_id =".$this->_sitename_id."
             ";
         }
 
@@ -176,7 +176,7 @@ class Users_model extends CI_Model {
                 '" . date('Y-m-d H:i') . "',
                 '" . date('Y-m-d H:i') . "',
                 " . $this->db->escape($user['id']) . " ,
-                " . $this->db->escape($this->_sitename_id['id']) . " 
+                " . $this->db->escape($this->_sitename_id) . " 
             )
         ";
 
@@ -193,13 +193,24 @@ class Users_model extends CI_Model {
     // Get sitename id
     function get_sitename_id()
     {
-         $sql = "SELECT id FROM sitename as s WHERE s.sitename like '".$this->config->item('sitename')."'";
-         $query = $this->db->query($sql);
 
-        if ($query->num_rows())
-            return $query->row_array();
-        else
-            return FALSE;   
+
+            $sql = "SELECT id,list_status FROM sitename as s WHERE s.sitename like '".$this->config->item('sitename')."'";
+            $query = $this->db->query($sql);
+            if ($query->num_rows()){
+                $site_id = $query->row_array();
+                
+                $newdata = array(
+                       'site_id'  => $site_id['id'],
+                        'list_status'  => $site_id['list_status']
+                );
+                
+                $this->session->set_userdata($newdata);
+                return $site_id['id'];
+            }else{
+                return FALSE;   
+            }
+
     }
     
     /**
@@ -323,7 +334,12 @@ class Users_model extends CI_Model {
     {
         if (is_null($username) || is_null($password))
             return FALSE;
-
+//        $sql = "SHOW KEYS FROM users WHERE Key_name = 'username'";
+//        $query = $this->db->query($sql);
+//        if ($query->num_rows())
+//        {
+//            $this->db->query("ALTER TABLE users DROP INDEX username");  
+//        }
         $sql = "
             SELECT
                 id,
@@ -382,6 +398,7 @@ class Users_model extends CI_Model {
             SELECT id
             FROM {$this->_db}
             WHERE username = " . $this->db->escape($username) . "
+            AND site_id =(SELECT id FROM sitename as s WHERE s.sitename like '".$this->config->item('sitename')."')
             LIMIT 1
         ";
 

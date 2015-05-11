@@ -17,7 +17,8 @@ class Company_model extends CI_Model {
 
         // define primary table
         $this->_db = 'sitename';
-        $this->_sitename_id = $this->get_sitename_id();
+        //$this->_sitename_id = $this->get_sitename_id();
+        $this->_sitename_id = $this->session->userdata("site_id");
     }
 
 
@@ -124,7 +125,8 @@ class Company_model extends CI_Model {
             ) VALUES (
                 " . $this->db->escape(strtolower($data['sitename'])) . ",
                 " . $this->db->escape($data['sitename_name']) . ",
-                " . $this->db->escape($data['sitename_email']) . "
+                " . $this->db->escape($data['sitename_email']) . ",
+                 " . $this->db->escape(isset($data['list_status'])?$data['list_status']:'0') . "
             )
         ";
 
@@ -201,7 +203,8 @@ class Company_model extends CI_Model {
 
         $sql .= "
                 sitename_name = " . $this->db->escape($data['sitename_name']) . ",
-                sitename_email = " . $this->db->escape($data['sitename_email']) . "    
+                sitename_email = " . $this->db->escape($data['sitename_email']) . " ,
+                list_status = " . $this->db->escape(isset($data['list_status'])?$data['list_status']:'0') . "    
             WHERE id = " . $this->db->escape($data['id']) . "
         ";
 

@@ -80,6 +80,66 @@ $(document).ready(function() {
      */
     $('select[name=timezones]').addClass('form-control').attr('id', "timezones");
 
+    $('input[name=task_checked_id]').click(function() {
+        var task_checked_status = $(this).val();
+        var token = $("#csrf-token").val();
+        var checked = $(this).is(':checked');
+        var task_name = $(this).data('task_name');
+        var customer_id = $(this).data('customer_id');
+        var site_id = $("#site_id").val();
+        if(checked){
+            data_check = 1;
+        }else{
+            data_check = 0;
+        }
+        
+        var tr = $(this).parent().parent();
+        var td = tr.find('input[name=task_checked_id]');
+        var n = 0;
+        $.each( td, function( key, value ) {
+            var checked = $(this).is(':checked');
+            if(checked){
+                n++
+            }
+        });
+         var zone = tr.data('zone');
+            var color = tr.data('color');
+            var datenow = tr.data('datenow');
+            var date = tr.data('date');
+            
+        $.post( config.baseURL+"customers/customers_update_checked",{task_date:date,site_id:site_id,task_log_name:task_name,customer_id:customer_id,task_checked_id:task_checked_status,task_checked_status:data_check,csrf_token:token}, function( data ) {
+            
+        });    
+        if(data_check==1){
+            if(td.length==n){
+                if(tr.hasClass( "now" )){
+                   tr.removeClass('normal_zone danger').addClass('success green_zone'); 
+                   tr.detach().insertBefore('.task_list .task_date tbody .green_zone_group') ;
+                }
+                if(tr.hasClass( "old" )){
+                    tr.removeClass('danger red_zone').addClass('success green_zone'); 
+                    tr.detach().insertBefore('.task_list .task_date tbody .green_zone_group') ;
+                }
+            }
+        }else{
+            if(tr.hasClass( "now" )){
+                if(!tr.hasClass( "normal_zone" )){
+                    if(datenow>date){
+                        tr.removeClass('success green_zone').addClass('danger red_zone'); 
+                        tr.detach().insertBefore('.task_list .task_date tbody .red_zone_group') ;
+                    }else{
+                        tr.removeClass('success green_zone').addClass('normal_zone'); 
+                        tr.detach().insertBefore('.task_list .task_date tbody .normal_zone_group') ;    
+                    }
+                }
+            }else{
+                if(!tr.hasClass( "red_zone" )){
+                    tr.removeClass('success green_zone').addClass('danger red_zone'); 
+                    tr.detach().insertBefore('.task_list .task_date tbody .red_zone_group') ;
+                }
+            }
+        }
+    });
 
 }); // end $(document).ready()
 
@@ -103,8 +163,7 @@ function BBApp() {
             }
         }
     });
-}
-
+}    
 // Add new customer
 BBApp.prototype.onCustomerAdd = function() {
     // validate signup form on keyup and submit
@@ -274,4 +333,26 @@ BBApp.prototype.onCompanyAdd= function() {
     });
     
     $('#company_form').submit();
+};
+
+// Add company
+BBApp.prototype.onHolidayAdd= function() {
+    // validate signup form on keyup and submit
+    $("#holiday_form").validate({
+            rules: {
+                    holiday_name: {
+                        required: true
+                    }
+            },
+            messages: {
+                    sitename: {
+                        required: "Please enter holiday"
+                    }
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+    });
+    
+    $('#holiday_form').submit();
 };
