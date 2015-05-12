@@ -806,7 +806,8 @@ class Customers_model extends CI_Model {
         $sql = "
             UPDATE task_checked
             SET
-            task_checked_status = " . $this->db->escape($data['task_checked_status']) . "
+            task_checked_status = " . $this->db->escape($data['task_checked_status']) . ",
+            task_checked_type = " . $this->db->escape(isset($data['task_checked_type'])?$data['task_checked_type']:'0') . "
             WHERE task_checked_id = " . $this->db->escape($data['task_checked_id']) . "
         ";
         $this->db->query($sql);
@@ -818,11 +819,12 @@ class Customers_model extends CI_Model {
 
          $sql = "
             INSERT INTO task_log (
-                customer_id,task_log_name,task_log_status,user_id,site_id,task_date,task_log_date
+                customer_id,task_log_name,task_log_status,task_log_type,user_id,site_id,task_date,task_log_date
             ) VALUES (
                 " . $this->db->escape($data['customer_id']) . ",
                 " . $this->db->escape($data['task_log_name']) . ",
                 " . $this->db->escape($data['task_checked_status']) . ",
+                " . $this->db->escape(isset($data['task_checked_type'])?$data['task_checked_type']:'0') . ",
                 " . $this->db->escape($user['id']) . ",
                 " . $this->db->escape($data['site_id']) . ",
                 " . $this->db->escape($data['task_date']) . ",
@@ -837,7 +839,7 @@ class Customers_model extends CI_Model {
         
         
          $sql = "
-                SELECT SQL_CALC_FOUND_ROWS tl.task_log_id, tl.task_log_date,tl.task_log_name,tl.task_log_status,u.username as username, c.name as customer_name,tl.task_date
+                SELECT SQL_CALC_FOUND_ROWS tl.task_log_id, tl.task_log_date,tl.task_log_name,tl.task_log_status,tl.task_log_type,u.username as username, c.name as customer_name,tl.task_date
                 FROM task_log as tl
                 LEFT JOIN sitename as s ON s.id = tl.site_id
                 LEFT JOIN customers as c ON c.id = tl.customer_id

@@ -81,23 +81,36 @@ $(document).ready(function() {
     $('select[name=timezones]').addClass('form-control').attr('id', "timezones");
 
     $('input[name=task_checked_id]').click(function() {
+        var class_name = $(this).attr('class');
         var task_checked_status = $(this).val();
         var token = $("#csrf-token").val();
         var checked = $(this).is(':checked');
         var task_name = $(this).data('task_name');
         var customer_id = $(this).data('customer_id');
+        var checked_type = $(this).data('checked_type');
+        //console.log(checked_type);
         var site_id = $("#site_id").val();
+        
         if(checked){
+            $("."+class_name).prop('checked', false);            
+            $(this).prop('checked', true);
             data_check = 1;
         }else{
+            $("."+class_name).prop('checked', false);            
+            $(this).prop('checked', false);
             data_check = 0;
         }
         
         var tr = $(this).parent().parent();
         var td = tr.find('input[name=task_checked_id]');
         var n = 0;
+        var ns = 0;
         $.each( td, function( key, value ) {
+            var special = $(this).data("checked_specail");
             var checked = $(this).is(':checked');
+            if(special){
+                ns++;
+            }
             if(checked){
                 n++
             }
@@ -107,11 +120,11 @@ $(document).ready(function() {
             var datenow = tr.data('datenow');
             var date = tr.data('date');
             
-        $.post( config.baseURL+"customers/customers_update_checked",{task_date:date,site_id:site_id,task_log_name:task_name,customer_id:customer_id,task_checked_id:task_checked_status,task_checked_status:data_check,csrf_token:token}, function( data ) {
+        $.post( config.baseURL+"customers/customers_update_checked",{task_checked_type:checked_type,task_date:date,site_id:site_id,task_log_name:task_name,customer_id:customer_id,task_checked_id:task_checked_status,task_checked_status:data_check,csrf_token:token}, function( data ) {
             
         });    
         if(data_check==1){
-            if(td.length==n){
+            if((td.length-(ns/2))==n){
                 if(tr.hasClass( "now" )){
                    tr.removeClass('normal_zone danger').addClass('success green_zone'); 
                    tr.detach().insertBefore('.task_list .task_date tbody .green_zone_group') ;
