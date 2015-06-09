@@ -6,5 +6,5 @@ $(document).ready(function() {
     $('.btn-delete-user').click(function() {
         window.location.href = "/admin/customers/delete/" + $(this).attr('data-id');
     });
-
+    $(".tableWithFloatingHeader ").stickyTableHeaders();
 });

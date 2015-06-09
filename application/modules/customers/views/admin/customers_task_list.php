@@ -26,12 +26,19 @@
 <input type="hidden" id="site_id" name="site_id" value="<?php echo $site_id; ?>" />
 <input type="hidden" id="csrf-token" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
 <div class="row table-responsive task task_list">
-    <table class="table task_date">
-        <thead>
+    <table class="table task_date tableWithFloatingHeader">
+        <thead >
             <tr class="active">
-                <td><?=lang('customers col name');?></td>
-                <td><?=lang('customers col email');?></td>
+                <td>
+                     <a href="<?php echo current_url(); ?>?sort=customer_name&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>&date=<?=$date;?>"><?php echo lang('customers col name'); ?></a>
+                        <?php if ($sort == 'customer_name') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
+                </td>
+                <td>
+                     <a href="<?php echo current_url(); ?>?sort=customer_email&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>&date=<?=$date;?>"><?php echo lang('customers col email'); ?></a>
+                        <?php if ($sort == 'customer_email') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
+                </td>
                 <td><?=lang('customers col data_entry');?><br />O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X</td>
+                <td><?=lang('customers col kontering');?><br />O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X</td>
                 <td><?=lang('customers col posting');?><br />O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X</td>
                 <td><?=lang('customers col Bankavstemning');?></td>
                 <td><?=lang('customers col Lønnskjøring');?></td>
@@ -51,8 +58,8 @@
                         $green_zone = Array();
                         $red_zone = Array();
                 if(count($data_old)>0) :
-                    foreach (array_filter($data_old) as $k => $value) :
-                        foreach (array_filter($value) as $k => $item) : 
+                    foreach (array_filter($data_old) as $k => $value1) :
+                        foreach (array_filter($value1) as $k1 => $item) : 
                             $text = '';
                             $checkbox3 = '';
                             $checkbox4 = '';
@@ -64,6 +71,7 @@
                             $checkbox10 = '';
                             $data_entry = '';
                             $data_posting = '';
+                            $data_kontering = '';
                             $check_count = 0;
                             $check_active = 0;
                             foreach ($item as $value) : 
@@ -122,11 +130,18 @@
                                     $data_posting = '<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-task_name="'.lang('customers col posting').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==0?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
                                     $data_posting .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-checked_type="1" data-task_name="'.lang('customers col posting').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==1?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
                                 endif; 
+                                if($value["task_id"]==21 || $value["task_id"]==22 || $value["task_id"]==23 || $value["task_id"]==24 || $value["task_id"]==25) : 
+                                    $check_active += 1;
+                                    $check_count = ($value["task_checked_status"]==1?$check_count+1:$check_count);
+                                    $data_kontering = '<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-task_name="'.lang('customers col kontering').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==0?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
+                                    $data_kontering .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-checked_type="1" data-task_name="'.lang('customers col kontering').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==1?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
+                                endif;
                             endforeach;
 
                         $text .= "<td>".$customer_name."</td>";
                         $text .= "<td>".$customer_email."</td>";
                         $text .= "<td>".$data_entry."</td>";
+                        $text .= "<td>".$data_kontering."</td>";
                         $text .= "<td>".$data_posting."</td>";
                         $text .= "<td>".(isset($checkbox3)?$checkbox3:'')."</td>";
                         $text .= "<td>".(isset($checkbox4)?$checkbox4:'')."</td>";
@@ -157,6 +172,7 @@
                         $checkbox10 = '';
                         $data_entry = '';
                         $data_posting = '';
+                        $data_kontering = '';
                         $check_count = 0;
                         $check_active = 0;
                         foreach ($item as $value) : 
@@ -215,11 +231,18 @@
                                 $data_posting = '<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-checked_type="0" data-task_name="'.lang('customers col posting').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==0?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
                                 $data_posting .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-checked_type="1" data-task_name="'.lang('customers col posting').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==1?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
                             endif; 
+                            if($value["task_id"]==21 || $value["task_id"]==22 || $value["task_id"]==23 || $value["task_id"]==24 || $value["task_id"]==25) : 
+                                $check_active += 1;
+                                $check_count = ($value["task_checked_status"]==1?$check_count+1:$check_count);
+                                $data_kontering = '<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-checked_type="0" data-task_name="'.lang('customers col kontering').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==0?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
+                                $data_kontering .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="checked-id-'.$value["task_checked_id"].'" data-checked_specail="1" data-checked_type="1" data-task_name="'.lang('customers col kontering').'" data-customer_id="'.$value["customer_id"].'" type="checkbox" '.($value["task_checked_status"]==1&&$value["task_checked_type"]==1?"checked":"").' value="'.$value["task_checked_id"].'" name="task_checked_id" />';
+                            endif; 
                         endforeach;
 
                     $text .= "<td>".$customer_name."</td>";
                     $text .= "<td>".$customer_email."</td>";
                     $text .= "<td>".$data_entry."</td>";
+                    $text .= "<td>".$data_kontering."</td>";
                     $text .= "<td>".$data_posting."</td>";
                     $text .= "<td>".(isset($checkbox3)?$checkbox3:'')."</td>";
                     $text .= "<td>".(isset($checkbox4)?$checkbox4:'')."</td>";

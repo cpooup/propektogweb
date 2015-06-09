@@ -101,7 +101,7 @@ td.sorted {
 .modal-body input[type="radio"], input[type="checkbox"]{margin: 2px 0 0;}
 select#choice,select#priority {width: 196px;}
 .modal-body .alert{padding:5px;margin-bottom:0;}
-#data_entry_alert,#posting_alert{display:none;}
+#data_entry_alert,#posting_alert,#kontering_alert{display:none;}
 .modal-body textarea.form-control {max-width: 233px;}
 .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"]{margin-left: -15px;}
 

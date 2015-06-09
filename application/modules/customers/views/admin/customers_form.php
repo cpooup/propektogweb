@@ -45,6 +45,29 @@
                         <?php echo lang('customers msg select at least one day');?>
                     </div>
                 </div>
+            <div class="form-group">
+                    <label for="kontering"><?php echo lang('customers col kontering');?></label>
+                    <div class="col-md-12 data_kontering">
+                            <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox1" name="kontering_monday" <?php echo $user['kontering_monday']>0?'checked':'';?> value="1"> <?php echo lang('kontering_monday1');?>
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox2" name="kontering_tuesday" <?php echo $user['kontering_tuesday']>0?'checked':'';?> value="1"> <?php echo lang('kontering_tuesday1');?>
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox3" name="kontering_wednesday" <?php echo $user['kontering_wednesday']>0?'checked':'';?> value="1"> <?php echo lang('kontering_wednesday1');?>
+                          </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox3" name="kontering_thursday" <?php echo $user['kontering_thursday']>0?'checked':'';?> value="1"> <?php echo lang('kontering_thursday1');?>
+                          </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox3" name="kontering_friday" <?php echo $user['kontering_friday']>0?'checked':'';?> value="1"> <?php echo lang('kontering_friday1');?>
+                          </label>
+                    </div>
+                    <div id="kontering_alert" class="alert alert-danger">
+                        <?php echo lang('customers msg select at least one day');?>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="posting"><?php echo lang('customers col posting');?></label>
                     <div class="col-md-12 posting">
@@ -180,7 +203,7 @@
 <script>
         $("#start_date3,#start_date4,#start_date5,#start_date6,#start_date7,#start_date8,#start_date9,#start_date10").datepicker({  
                     defaultDate: new Date(),
-                    dateFormat: 'mm/dd/yyy',
+                    dateFormat: 'dd/mm/yy',
                     autoclose: true
         }); 
 </script>

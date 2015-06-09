@@ -4,22 +4,28 @@
             <thead>
                 <tr>
                     <td>
-                        <?php echo lang('customers col datetime'); ?>
+                        <a href="<?php echo current_url(); ?>?sort=task_log_date&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col datetime'); ?></a>
+                        <?php if ($sort == 'task_log_date') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                     <td>
-                        <?php echo lang('customers col name'); ?>
+                        <a href="<?php echo current_url(); ?>?sort=customer_name&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col name'); ?></a>
+                        <?php if ($sort == 'customer_name') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                     <td>
-                        <?php echo lang('customers col task'); ?>
+                        <a href="<?php echo current_url(); ?>?sort=task_log_name&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col task'); ?></a>
+                        <?php if ($sort == 'task_log_name') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                     <td>
-                        <?php echo lang('customers col status'); ?>
+                        <a href="<?php echo current_url(); ?>?sort=task_log_status&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col status'); ?></a>
+                        <?php if ($sort == 'task_log_status') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                     <td>
-                        <?php echo lang('customers col date'); ?>
+                        <a href="<?php echo current_url(); ?>?sort=task_date&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col date'); ?></a>
+                        <?php if ($sort == 'task_date') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                     <td>
-                        <?php echo lang('customers col user'); ?>
+                        <a href="<?php echo current_url(); ?>?sort=username&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('customers col user'); ?></a>
+                        <?php if ($sort == 'username') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                 </tr>
             </thead>
@@ -28,7 +34,7 @@
                     <?php foreach ($task_log as $value) : ?>
                         <tr>
                             <td>
-                                    <?php echo ($value['task_log_date']!=NULL) ? mdate("%m/%d/%Y %h:%i", strtotime($value['task_log_date'])):""; ?>
+                                    <?php echo ($value['task_log_date']!=NULL) ? mdate("%d/%m/%Y %h:%i", strtotime($value['task_log_date'])):""; ?>
                             </td>
                             <td>
                                     <?php echo $value['customer_name']; ?>
@@ -38,7 +44,7 @@
                             </td>
                             <td>
                                 <?php
-                                    if($value['task_log_name']=="Prekontering" ||$value['task_log_name']=="Bokføring"){
+                                    if($value['task_log_name']=="Prekontering" ||$value['task_log_name']=="Bokføring" ||$value['task_log_name']=="Kontering"){
                                         $task_log_type = " (".(($value['task_log_type']==1)?"X":"O").")";
                                     }else{
                                         $task_log_type = "";
@@ -47,7 +53,7 @@
                                     <?php echo (($value['task_log_status']==1)?"Checked":"Unchecked").$task_log_type; ?>
                             </td>
                             <td>
-                                    <?php echo ($value['task_date']!=NULL) ? mdate("%m/%d/%Y", strtotime($value['task_date'])):""; ?>
+                                    <?php echo ($value['task_date']!=NULL) ? mdate("%d/%m/%Y", strtotime($value['task_date'])):""; ?>
                             </td>
                             <td>
                                     <?php echo $value['username']; ?>

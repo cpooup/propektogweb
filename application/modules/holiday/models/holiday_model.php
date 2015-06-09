@@ -110,7 +110,7 @@ class Holiday_model extends CI_Model {
             return FALSE;
         $user = $this->session->userdata('logged_in');
         //Add holiday
-        $newDate = date("Y-m-d", strtotime($data['date']));
+        $newDate = date("Y-m-d", strtotime(str_replace('/', '-',$data['date'])));
         $sql = "
             INSERT INTO {$this->_db} (
                 holiday_name, date
@@ -141,7 +141,7 @@ class Holiday_model extends CI_Model {
         if (empty($data))
             return FALSE;
         $user = $this->session->userdata('logged_in');
-        $newDate = date("Y-m-d", strtotime($data['date']));
+        $newDate = date("Y-m-d", strtotime(str_replace('/', '-',$data['date'])));
         $sql = "
             UPDATE {$this->_db}
             SET
@@ -151,7 +151,7 @@ class Holiday_model extends CI_Model {
         $sql .= "
                 holiday_name = " . $this->db->escape($data['holiday_name']) . ",
                 date = " . $this->db->escape($newDate) . "   
-            WHERE holiday_id = " . $this->db->escape($data['id']) . "
+            WHERE holiday_id = " . $data['id'] . "
         ";
 
         $this->db->query($sql);

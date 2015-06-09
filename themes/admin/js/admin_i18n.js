@@ -13,6 +13,9 @@ var config = {
 $(document).ready(function() {
     
     window.app = new BBApp();
+    if( $('.task').length ) {
+        setTimeout("location.reload(true);",60000);
+    }
     
     /**
      * Enable tooltips
@@ -179,6 +182,20 @@ function BBApp() {
 }    
 // Add new customer
 BBApp.prototype.onCustomerAdd = function() {
+        $.validator.addMethod('date',
+    function (value, element) {
+        if (this.optional(element)) {
+            return true;
+        }
+        var ok = true;
+        try {
+            $.datepicker.parseDate('dd/mm/yy', value);
+        }
+        catch (err) {
+            ok = false;
+        }
+        return ok;
+    });
     // validate signup form on keyup and submit
     $("#customers_form").validate({
             rules: {
@@ -350,6 +367,21 @@ BBApp.prototype.onCompanyAdd= function() {
 
 // Add company
 BBApp.prototype.onHolidayAdd= function() {
+    $.validator.addMethod('date',
+    function (value, element) {
+        if (this.optional(element)) {
+            return true;
+        }
+        var ok = true;
+        try {
+            $.datepicker.parseDate('dd/mm/yy', value);
+        }
+        catch (err) {
+            ok = false;
+        }
+        return ok;
+    });
+    
     // validate signup form on keyup and submit
     $("#holiday_form").validate({
             rules: {

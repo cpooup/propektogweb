@@ -8,7 +8,8 @@
                         <?php if ($sort == 'holiday_name') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                     <td>
-                        <?php echo lang('company title date'); ?>
+                        <a href="<?php echo current_url(); ?>?sort=date&dir=<?php echo (($dir == 'asc' ) ? 'desc' : 'asc'); ?>&limit=<?php echo $limit; ?>&offset=<?php echo $offset; ?><?php echo $filter; ?>"><?php echo lang('company title date'); ?></a>
+                        <?php if ($sort == 'date') : ?><span class="glyphicon glyphicon-arrow-<?php echo (($dir == 'asc') ? 'up' : 'down'); ?>"></span><?php endif; ?>
                     </td>
                 </tr>
             </thead>
@@ -20,7 +21,7 @@
                                     <?php echo $value['holiday_name']; ?>
                             </td>
                             <td>
-                                    <?php echo ($value['date']!=NULL) ? mdate("%m/%d/%Y", strtotime($value['date'])):""; ?>
+                                    <?php echo ($value['date']!=NULL) ? mdate("%d/%m/%Y", strtotime($value['date'])):""; ?>
                             </td>
                             <td>
                                 <div class="btn-group pull-right">

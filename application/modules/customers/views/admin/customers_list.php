@@ -34,6 +34,9 @@
                             <?php echo lang('customers col data_entry'); ?>
                         </td>
                     <?php endif; ?>
+                    <td>
+                            <?php echo lang('customers col kontering'); ?>
+                        </td>    
                     <?php if($column['posting']==1) : ?>
                         <td>
                             <?php echo lang('customers col posting'); ?>
@@ -125,6 +128,15 @@
                                     ?>
                                 </td>
                             <?php endif; ?>
+                                <td>
+                                    <?php 
+                                        echo lang($tab.'kontering_monday'.$user['kontering_monday']);
+                                        echo lang($tab.'kontering_tuesday'.$user['kontering_tuesday']); 
+                                        echo lang($tab.'kontering_wednesday'.$user['kontering_wednesday']); 
+                                        echo lang($tab.'kontering_thursday'.$user['kontering_thursday']);
+                                        echo lang($tab.'kontering_friday'.$user['kontering_friday']);
+                                    ?>
+                                </td>
                             <?php if($column['posting']==1) : ?>
                                 <td>
                                     <?php 

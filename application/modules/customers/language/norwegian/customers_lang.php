@@ -59,6 +59,7 @@ $lang['customers col approveby']                = "Godkjennere";
 $lang['customers col updated']                  = "Oppdatert";
 $lang['customers col updateby']                 = "Bruker";
 $lang['customers col data_entry']               = "Prekontering";
+$lang['customers col kontering']               = "Kontering";
 $lang['customers col posting']                  = "Bokføring";
 $lang['customers col sitename']                  = "Kunde";
 $lang['customers col created']                  = "Create Date";
@@ -84,6 +85,19 @@ $lang['3data_entry_tuesday1']                 = "tirsdag<br>";
 $lang['4data_entry_wednesday1']                 = "onsdag<br>";
 $lang['5data_entry_thursday1']                 = "torsdag<br>";
 $lang['6data_entry_friday1']                 = "fredag";
+
+// Result Data Fontering Day
+$lang['kontering_monday1']                 = "mandag<br>";
+$lang['kontering_tuesday1']                 = "tirsdag<br>";
+$lang['kontering_wednesday1']                 = "onsdag<br>";
+$lang['kontering_thursday1']                 = "torsdag<br>";
+$lang['kontering_friday1']                 = "fredag";
+
+$lang['2kontering_monday1']                 = "mandag<br>";
+$lang['3kontering_tuesday1']                 = "tirsdag<br>";
+$lang['4kontering_wednesday1']                 = "onsdag<br>";
+$lang['5kontering_thursday1']                 = "torsdag<br>";
+$lang['6kontering_friday1']                 = "fredag";
 
 // Result Posting Day
 $lang['posting_monday1']                 = "mandag<br>";
@@ -180,6 +194,7 @@ $lang['export col comment_privat']           = "Privat";
 $lang['export col approveby']                = "Godkjennere";
 $lang['export col updated']                  = "Oppdatert";
 $lang['export col updateby']                 = "Bruker";
+$lang['export col kontering']               = "Kontering";
 $lang['export col data_entry']               = "Prekontering";
 $lang['export col posting']                  = "Bokføring";
 $lang['export col sitename']                  = "Kunde";
@@ -192,6 +207,13 @@ $lang['export data_entry_tuesday1']                 = "tirsdag \r\n";
 $lang['export data_entry_wednesday1']                 = "onsdag \r\n";
 $lang['export data_entry_thursday1']                 = "torsdag \r\n";
 $lang['export data_entry_friday1']                 = "fredag";
+
+// Export Result Data Entry Day
+$lang['export kontering_monday1']                 = "mandag \r\n";
+$lang['export kontering_tuesday1']                 = "tirsdag \r\n";
+$lang['export kontering_wednesday1']                 = "onsdag \r\n";
+$lang['export kontering_thursday1']                 = "torsdag \r\n";
+$lang['export kontering_friday1']                 = "fredag";
 
 // Export Result Posting Day
 $lang['export posting_monday1']                 = "mandag \r\n";

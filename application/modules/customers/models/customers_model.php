@@ -39,20 +39,22 @@ class Customers_model extends CI_Model {
         
         if($this->config->item('master_sitename')==$this->config->item('sitename')){
             $sql = "
-                SELECT SQL_CALC_FOUND_ROWS c.*,d.*,p.*,u.username,s.sitename
+                SELECT SQL_CALC_FOUND_ROWS c.*,d.*,p.*,k.*,u.username,s.sitename
                 FROM {$this->_db} as c
                 LEFT JOIN data_entry as d ON d.customer_id = c.id 
                 LEFT JOIN posting as p ON p.customer_id = c.id
+                LEFT JOIN kontering as k ON k.customer_id = c.id
                 LEFT JOIN users as u ON u.id = c.updateby
                 LEFT JOIN sitename as s ON s.id = c.site_id
                 WHERE 1=1
             ";
         }else{
             $sql = "
-                SELECT SQL_CALC_FOUND_ROWS c.*,d.*,p.*,u.username,s.sitename
+                SELECT SQL_CALC_FOUND_ROWS c.*,d.*,p.*,k.*,u.username,s.sitename
                 FROM {$this->_db} as c
                 LEFT JOIN data_entry as d ON d.customer_id = c.id 
                 LEFT JOIN posting as p ON p.customer_id = c.id
+                LEFT JOIN kontering as k ON k.customer_id = c.id
                 LEFT JOIN users as u ON u.id = c.updateby
                 LEFT JOIN sitename as s ON s.id = c.site_id
                 WHERE c.deleted = '0'
@@ -120,20 +122,22 @@ class Customers_model extends CI_Model {
         
         if($this->config->item('master_sitename')==$this->config->item('sitename')){
             $sql = "
-                SELECT c.*,d.*,p.*,u.username,s.sitename,s.list_status
+                SELECT c.*,d.*,p.*,k.*,u.username,s.sitename,s.list_status
                 FROM {$this->_db} as c
                 LEFT JOIN data_entry as d ON d.customer_id = c.id 
                 LEFT JOIN posting as p ON p.customer_id = c.id
+                LEFT JOIN kontering as k ON k.customer_id = c.id
                 LEFT JOIN users as u ON u.id = c.updateby  
                 LEFT JOIN sitename as s ON s.id = c.site_id
                 WHERE c.id = " . $this->db->escape($id) . "
             ";
         }else{
             $sql = "
-                SELECT c.*,d.*,p.*,u.username,s.sitename,s.list_status
+                SELECT c.*,d.*,p.*,k.*,u.username,s.sitename,s.list_status
                 FROM {$this->_db} as c
                 LEFT JOIN data_entry as d ON d.customer_id = c.id 
                 LEFT JOIN posting as p ON p.customer_id = c.id
+                LEFT JOIN kontering as k ON k.customer_id = c.id
                 LEFT JOIN users as u ON u.id = c.updateby
                 LEFT JOIN sitename as s ON s.id = c.site_id
                 WHERE c.id = " . $this->db->escape($id) . "
@@ -238,6 +242,21 @@ class Customers_model extends CI_Model {
                 )
             ";
             $this->db->query($sql);
+            
+            $sql = "
+                INSERT INTO kontering (
+                    customer_id, kontering_monday, kontering_tuesday, kontering_wednesday, kontering_thursday, kontering_friday
+                ) VALUES (
+                    " . $this->db->escape($id) . ",
+                    " . $this->db->escape(isset($data['kontering_monday'])?$data['kontering_monday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_tuesday'])?$data['kontering_tuesday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_wednesday'])?$data['kontering_wednesday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_thursday'])?$data['kontering_thursday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_friday'])?$data['kontering_friday']:'0') . "
+                )
+            ";
+            $this->db->query($sql);
+            
             if( $this->session->userdata("list_status")==1 || ($this->config->item('master_sitename')==$this->config->item('sitename'))){
                 $this->check_add_task_list($data,$id,$this->_sitename_id);
             }
@@ -310,6 +329,35 @@ class Customers_model extends CI_Model {
                 posting_friday = " . $this->db->escape(isset($data['posting_friday'])?$data['posting_friday']:'0') . "
                 WHERE customer_id = " . $this->db->escape($data['id']) . "
             ";
+            
+            $this->db->query($sql);
+            
+            $customer = $this->get_customer($data['id']);
+            if($customer["kontering_id"]!=""){
+                $sql = "
+                UPDATE kontering
+                SET
+                kontering_monday = " . $this->db->escape(isset($data['kontering_monday'])?$data['kontering_monday']:'0') . ",
+                kontering_tuesday = " . $this->db->escape(isset($data['kontering_tuesday'])?$data['kontering_tuesday']:'0') . ",
+                kontering_wednesday = " . $this->db->escape(isset($data['kontering_wednesday'])?$data['kontering_wednesday']:'0') . ",
+                kontering_thursday = " . $this->db->escape(isset($data['kontering_thursday'])?$data['kontering_thursday']:'0') . ",
+                kontering_friday = " . $this->db->escape(isset($data['kontering_friday'])?$data['kontering_friday']:'0') . "
+                WHERE customer_id = " . $this->db->escape($data['id']) . "
+            ";
+            }else{
+                $sql = "
+                INSERT INTO kontering (
+                    customer_id, kontering_monday, kontering_tuesday, kontering_wednesday, kontering_thursday, kontering_friday
+                ) VALUES (
+                    " . $this->db->escape($data['id']) . ",
+                    " . $this->db->escape(isset($data['kontering_monday'])?$data['kontering_monday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_tuesday'])?$data['kontering_tuesday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_wednesday'])?$data['kontering_wednesday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_thursday'])?$data['kontering_thursday']:'0') . ",
+                    " . $this->db->escape(isset($data['kontering_friday'])?$data['kontering_friday']:'0') . "
+                )
+            ";
+            }
             $this->db->query($sql);
             if( $this->session->userdata("list_status")==1 || ($this->config->item('master_sitename')==$this->config->item('sitename'))){
                 $this->check_add_task_list($data,$data['id'],$data['site_id']);
@@ -503,10 +551,24 @@ class Customers_model extends CI_Model {
         else
             return FALSE;
     }
+    //GET Task checked List by day
+    function get_task_list_checked_by_date($date,$task_list_id){
+         $sql = "
+                SELECT tc.*
+                FROM task_checked as tc
+                WHERE tc.task_checked_date = " . $this->db->escape($date) . "
+                AND tc.task_list_id = " . $this->db->escape($task_list_id) . "
+            ";
+        $query = $this->db->query($sql);
+         if ($query->num_rows())
+            return $query->result_array();
+        else
+            return FALSE;
+    }
     //GET Task List
     function get_task_list($id)
     {
-        $DateString = "%m/%d/%Y";
+        $DateString = "%d/%m/%Y";
          $sql = "
                 SELECT *
                 FROM task_list
@@ -561,7 +623,7 @@ class Customers_model extends CI_Model {
     function add_task_list($task_id,$site_id,$customer_id,$repeat,$task_list_type,$start_date)
     {
         if($start_date!=''){
-            $newDate = date("Y-m-d", strtotime($start_date));
+            $newDate = date("Y-m-d", strtotime(str_replace('/', '-',$start_date)));
         }else{
             $newDate = NULL;
         }
@@ -584,7 +646,7 @@ class Customers_model extends CI_Model {
     function update_task_list($task_id,$site_id,$customer_id,$repeat,$task_list_type,$start_date)
     {
         if($start_date!=''){
-            $newDate = date("Y-m-d", strtotime($start_date));
+            $newDate = date("Y-m-d", strtotime(str_replace('/', '-',$start_date)));
         }else{
             $newDate = NULL;
         }
@@ -647,6 +709,16 @@ class Customers_model extends CI_Model {
                     $this->update_task_list($item['task_id'],$site_id,$id,1,0,isset($data['posting_thursday'])? mdate($DateString,time()): NULL);
                 if($item['task_id']==20)
                     $this->update_task_list($item['task_id'],$site_id,$id,1,0,isset($data['posting_friday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==21)
+                    $this->update_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_monday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==22)
+                    $this->update_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_tuesday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==23)
+                    $this->update_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_wednesday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==24)
+                    $this->update_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_thursday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==25)
+                    $this->update_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_friday'])? mdate($DateString,time()): NULL);
             }
         }
     }
@@ -698,6 +770,16 @@ class Customers_model extends CI_Model {
                     $this->add_task_list($item['task_id'],$site_id,$id,1,0,isset($data['posting_thursday'])? mdate($DateString,time()): NULL);
                 if($item['task_id']==20)
                     $this->add_task_list($item['task_id'],$site_id,$id,1,0,isset($data['posting_friday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==21)
+                    $this->add_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_monday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==22)
+                    $this->add_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_tuesday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==23)
+                    $this->add_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_wednesday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==24)
+                    $this->add_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_thursday'])? mdate($DateString,time()): NULL);
+                if($item['task_id']==25)
+                    $this->add_task_list($item['task_id'],$site_id,$id,1,0,isset($data['kontering_friday'])? mdate($DateString,time()): NULL);
             }
         }
         
@@ -781,7 +863,7 @@ class Customers_model extends CI_Model {
         }
     }
 
-    function get_checked_ByDate($date,$site_id)
+    function get_checked_ByDate($date,$site_id,$limit=0, $offset=0, $filters=array(), $sort='customer_name', $dir='ASC')
     {
         $sql = "
                 SELECT t.*,tc.*,tl.*,s.*,c.id as customer_id,c.name as customer_name,c.email as customer_email
@@ -790,8 +872,28 @@ class Customers_model extends CI_Model {
                 LEFT JOIN task as t ON t.task_id = tl.task_id 
                 LEFT JOIN sitename as s ON s.id = tl.site_id
                 LEFT JOIN customers as c ON c.id = tl.customer_id
-                WHERE tc.task_checked_date = " . $this->db->escape($date) . " AND s.id=".$this->db->escape($site_id)." ORDER BY c.name";
+                WHERE tc.task_checked_date = " . $this->db->escape($date) . " AND s.id=".$this->db->escape($site_id)." ";
+        
+        if ( ! empty($filters))
+        {
+            foreach ($filters as $key=>$value)
+            {
+                $value = $this->db->escape('%' . $value . '%');
+                $sql .= " AND {$key} LIKE {$value}";
+            }
+        }
+
+        $sql .= " ORDER BY {$sort} {$dir}";
+
+        if ($limit)
+        {
+            $offset = (int)$offset;
+            $limit  = (int)$limit;
+            $sql .= " LIMIT {$offset}, {$limit}";
+        }
+        
         $query = $this->db->query($sql);
+        
         if ($query->num_rows())
             return $query->result_array();
         else

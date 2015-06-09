@@ -19,7 +19,7 @@
             <div class="form-group has-feedback <?php echo (form_error('date')) ? 'has-error': ''; ?>">
                     <div class="input-group">
                         <?php echo form_span(lang('company title date'), 'date', array('class'=>'input-group-addon')); ?>
-                            <input placeholder="<?=lang('customer list date');?>" name="date" type="text" class="date" value="<?php echo ($holiday['date']!=NULL) ? mdate("%m/%d/%Y", strtotime($holiday['date'])):""; ?>" class="form-control"/> 
+                            <input placeholder="<?=lang('customer list date');?>" name="date" type="text" class="date" value="<?php echo (isset($holiday['date']) && $holiday['date']!=NULL) ? mdate("%d/%m/%Y", strtotime($holiday['date'])):""; ?>" class="form-control"/> 
                     </div>
             </div>
         </div>
@@ -30,9 +30,11 @@
     </div> <!-- /.modal-content -->
 </div> <!-- /.modal-dialog -->
 <script>
+    var dateBefore=null; 
         $(".date").datepicker({  
                     defaultDate: new Date(),
-                    dateFormat: 'mm/dd/yyy',
+                    dateFormat: 'dd/mm/yy',
                     autoclose: true
         }); 
+
 </script>

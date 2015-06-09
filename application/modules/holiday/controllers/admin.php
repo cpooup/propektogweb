@@ -61,6 +61,8 @@ class Admin extends Admin_Controller {
 
         if ($this->input->get('holiday_name'))
             $filters['holiday_name'] = $this->input->get('holiday_name', TRUE);
+        if ($this->input->get('date'))
+            $filters['date'] = $this->input->get('date', TRUE);
         
         // build filter string
         $filter = "";
@@ -85,6 +87,8 @@ class Admin extends Admin_Controller {
 
                 if ($this->input->post('holiday_name'))
                     $filter .= "&holiday_name=" . $this->input->post('holiday_name', TRUE);
+                if ($this->input->post('date'))
+                    $filter .= "&date=" . $this->input->post('date', TRUE);
                 
                 // redirect using new filter(s)
                 redirect(THIS_URL . "?sort={$sort}&dir={$dir}&limit={$limit}&offset={$offset}{$filter}");
